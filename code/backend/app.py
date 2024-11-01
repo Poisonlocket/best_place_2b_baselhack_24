@@ -60,6 +60,4 @@ def add_guide():
     guides.append(new_guide)
     print(guides)
     return Response("Guide added successfully", 201)
-
-
 app.run()

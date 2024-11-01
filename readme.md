@@ -15,3 +15,6 @@ You can use the MIT license in this template. Make sure to adjust the copy right
 You are also free to choose any other license - depending on the consensus of your team.
 
 Thanks a lot!
+
+
+Use '''curl -X POST -F 'file=@/home/user/Pictures/file.jpg' http://127.0.0.1:5000/upload''' to upload an image.
