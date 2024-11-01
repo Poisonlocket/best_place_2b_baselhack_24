@@ -2,9 +2,9 @@ import uuid
 from section import Section
 
 class Guide:
-    def __init__(self, title):
+    def __init__(self, title, sections=[]):
         self.title = title
-        self.sections = []
+        self.sections = sections
         self._uuid = uuid.uuid4()
 
     def get_uuid(self):
