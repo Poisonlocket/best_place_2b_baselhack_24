@@ -1,9 +1,20 @@
+import uuid
 from section import Section
 
 class Guide:
     def __init__(self, title):
         self.title = title
         self.sections = []
+        self._uuid = uuid.uuid4()
+
+    def get_uuid(self):
+        return self._uuid
+    
+    def get_title(self):
+        return self.title
+    
+    def modify_title(self, title):
+        self.title = title
 
     def add_section(self, section):
         if isinstance(section, Section):
