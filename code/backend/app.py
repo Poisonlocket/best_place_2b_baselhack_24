@@ -4,12 +4,12 @@ app = Flask(__name__)
 
 
 @app.get("/app")
-def hello():
+def hello() -> str:
     return "henlo"
 
-
+# very important endpoint, serving lots of tea
 @app.get("/418")
-def teapot():
+def teapot() -> Response:
     art = r"""
             .------.____
          .-'       \ ___)
@@ -34,6 +34,7 @@ def teapot():
 """
 
     return Response(art, mimetype="text/plain")
+
 
 
 app.run()
