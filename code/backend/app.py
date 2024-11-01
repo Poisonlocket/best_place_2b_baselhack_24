@@ -1,5 +1,6 @@
 from flask import Flask, Response, Request, request
 from guide import Guide
+from helpers import upload_image
 
 app = Flask(__name__)
 
@@ -60,4 +61,10 @@ def add_guide():
     guides.append(new_guide)
     print(guides)
     return Response("Guide added successfully", 201)
+
+@app.post("/upload")
+def upload_file():
+    upload_image()
+    return "Failed"
+
 app.run()
