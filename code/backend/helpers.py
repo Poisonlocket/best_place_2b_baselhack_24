@@ -7,6 +7,9 @@ from flask import request, redirect
 from guide import Guide
 from section import Section
 
+import functools
+import operator
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from ai.ai_functions import *
@@ -109,7 +112,7 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
         all_images = []
         for section in sections.values():
             all_images.append(section.get_img_ids())
-        guide_texts = gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
+        guide_texts = "dummy text" #gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
         index = 0
         for section in sections.values():
             section.set_text(guide_texts[index])
@@ -140,3 +143,25 @@ def unique_guide(guides, guide_uuid):
         section_json["text"] = section.get_text()
         section_list.append(section_json)
     return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{section_list}}}'
+
+def guide_image_data(guides, guide_id):
+    image_paths = []
+    file_objects = []
+
+    current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_id)]
+    for section in current_guide.sections:
+        ids = section.get_img_ids()
+        image_paths.append(ids)
+
+    image_paths = functools.reduce(operator.iconcat, image_paths, [])
+    print("image_paths: ", image_paths)
+
+    for filename in image_paths:
+        file_path = os.path.join("./uploads/images", filename)
+        try:
+            file = open(file_path, 'r')  # Opens the file in read mode; adjust mode as needed
+            file_objects.append(file)
+        except FileNotFoundError:
+            print(f"File '{filename}' not found in directory images'")
+
+    return file_objects
