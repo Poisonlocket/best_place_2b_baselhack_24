@@ -13,7 +13,7 @@ function Test() {
       const fileBlob = await response.blob();
 
       let data = new FormData();
-      data.append('images', fileBlob, "hello darkness my old friend");
+      data.append('images', fileBlob, "hello darkness my old friend.jpg");
       return data
     } catch(err) {
       console.error(err)
