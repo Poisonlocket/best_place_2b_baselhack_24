@@ -1,5 +1,9 @@
 import os
+from typing import Dict
+
 from flask import request, redirect
+
+from code.backend.guide import Guide
 from guide import Guide
 from section import Section
 
@@ -20,7 +24,7 @@ def find_guide_index(guides, guide_uuid):
             return index
     return -1
 
-def upload_all(guides: list[Guide]) -> str:
+def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
     files = request.files.getlist('awesome_files')
 
     guide_exists = False
