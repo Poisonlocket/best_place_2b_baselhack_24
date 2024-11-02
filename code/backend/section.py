@@ -16,20 +16,16 @@ class Section:
     def get_text(self):
         return self.text
 
+    # Input: image path
     def add_image(self, image):
-        return # TO BE MODIFIED
-
-    def modify_image(self, image):
-        return # TO BE MODIFIED
+        self.img_ids.append(image)
     
     def remove_image(self, image):
-        return # TO BE MODIFIED
+        self.img_ids.remove(image)
     
-    def add_text(self, text):
-        return # TO BE MODIFIED
-    
-    def modify_text(self, text):
-        return # TO BE MODIFIED
+    # Input: text block (string)
+    def set_text(self, text):
+        self.text = text
     
     def remove_text(self, text):
-        return # TO BE MODIFIED
+        self.text = ""
