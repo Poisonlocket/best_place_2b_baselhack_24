@@ -1,10 +1,14 @@
 import os
+import sys
 from typing import Dict, List
 
 from flask import request, redirect
 
 from guide import Guide
 from section import Section
+from ai.ai_functions import *
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 IMAGE_FOLDER = 'uploads/images'
 AUDIO_FOLDER = 'uploads/audio'
@@ -77,12 +81,9 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
             if file_extension in ALLOWED_IMAGE_EXTENSIONS:
                 current_section.add_image(filename)
 
-            # add text when AI is ready
             if file_extension in ALLOWED_AUDIO_EXTENSIONS:
-                # send to AI
-                # ai_text = ...
-                # curren_section.set_text(ai_text)
-                pass
+                transcribed_text = transcribe_and_format_audio(filename)
+                current_section.set_text(transcribed_text)
             
             sections[step_sequence] = current_section
                 
