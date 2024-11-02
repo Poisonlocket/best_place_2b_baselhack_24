@@ -1,0 +1,3 @@
+Take the pen seen as in image 1 and the lid seen in image 2.
+Align both as seen in image 3 and push the pen and lid together.
+Control your result by comparing it with image 4.
