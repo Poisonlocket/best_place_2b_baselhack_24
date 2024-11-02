@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Guide } from "./model";
+import { generateTestGuide } from './test_data';
 // api.js
 export const saveAndProcessGuide = async ({ guide }) => {
     try {
@@ -51,3 +52,10 @@ async function storeImages(data) {
         console.error(error)
     });
 }
+
+
+// api.js
+export const getGuide = async (id) => {
+    
+    return generateTestGuide();
+};
