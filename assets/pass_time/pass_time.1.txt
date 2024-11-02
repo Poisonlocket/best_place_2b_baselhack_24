@@ -1,0 +1,9 @@
+## Section 1
+
+Put the pen on the whiteboard to start drawing.
+
+Make the first line by moving the pen across the board, while it keeps in contact with the surface.
+
+Repeat the process another three times. Once in the same direction and twice in a perpendicular direction.
+
+You should end up with an octothorpe.
