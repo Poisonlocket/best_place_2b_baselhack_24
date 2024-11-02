@@ -53,6 +53,7 @@ const CarrouselView = () => {
                     ))}
                 </Carousel>
             </div>
+            <p className="text-center mt-4">{overallDescription}</p> {/* Overall description moved here */}
             <div className="mt-4">
                 <Progress
                     progress={progressPercentage}
@@ -61,7 +62,6 @@ const CarrouselView = () => {
                     labelProgress
                 />
             </div>
-            <p className="text-center mt-4">{overallDescription}</p> {/* Overall description here */}
             
             {/* Modal for showing image description */}
             {selectedImage && (
@@ -82,6 +82,7 @@ const CarrouselView = () => {
 };
 
 export default CarrouselView;
+
 
 
 
