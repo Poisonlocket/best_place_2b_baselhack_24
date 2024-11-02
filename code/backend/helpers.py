@@ -109,3 +109,14 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
 
 
     return {"frontend_return": f'{{"guide_id":"{frontend_guide_uuid}", "comment":"thank you for your service!"}}', "app_return": current_guide}
+
+
+def guide_list(guides):
+    # creates the json response for the frontend to list all guides
+    guide_uuids_list = []
+    guide_titles_list = []
+    for guide in guides:
+        guide_uuids_list.append(guide.get_uuid())
+        guide_titles_list.append(guide.get_title())
+    
+    return f'{{"guides":[{guide_uuids_list}], "titles":[{guide_titles_list}]}}'
