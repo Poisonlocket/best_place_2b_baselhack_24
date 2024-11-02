@@ -16,8 +16,13 @@ You are also free to choose any other license - depending on the consensus of yo
 
 Thanks a lot!
 
+### Frontend
+
+jk, we don't do documentation (read react docu)
 
 ### Backend
+
+install flask and flask-cors
 
 Start the backend flask server with 
 ```sh
