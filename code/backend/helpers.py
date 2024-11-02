@@ -37,4 +37,4 @@ def upload_audio():
         else:
             raise TypeError("Invalid file type for audio file: ", audio.filename)
 
-    return f"Images uploaded successfully"
+    return f"Audio uploaded successfully"
