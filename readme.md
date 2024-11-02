@@ -21,7 +21,7 @@ Thanks a lot!
 jk, we don't do documentation (read react docu)
 
 if you're not a nerd:
-use npm install to get dependencies
+use `npm install` to get dependencies
 then run:
 ```sh
 npm start
