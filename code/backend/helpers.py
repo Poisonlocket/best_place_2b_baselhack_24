@@ -12,7 +12,7 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'm4a', 'wav', 'ogg'}
 
 def allowed_upload_file(filename: str) -> bool:
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in (ALLOWED_IMAGE_EXTENSIONS or ALLOWED_IMAGE_EXTENSIONS)
+    return '.' in filename and filename.split('.')[-1].lower() in (ALLOWED_IMAGE_EXTENSIONS or ALLOWED_AUDIO_EXTENSIONS)
 
 def split_filename(filename: str) -> [str]:
     return filename.split('.')
