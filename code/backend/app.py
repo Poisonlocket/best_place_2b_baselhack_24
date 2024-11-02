@@ -2,7 +2,7 @@ import flask
 from flask import Flask, Response, Request, request
 from flask_cors import CORS, cross_origin
 from guide import Guide
-from helpers import upload_all
+from helpers import *
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -62,7 +62,7 @@ def get_specific_guide(guide_id:int):
 @cross_origin()
 def add_guide():
     data = request.get_json()
-    new_guide = Guide(title=data["title"], sections=data["sections"]) 
+    new_guide = Guide(sections=data["sections"]) 
     guides.append(new_guide)
     print(guides)
     return Response("Guide added successfully", 201)
@@ -73,6 +73,14 @@ def upload():
     returns = upload_all(guides)
     guides.append(returns["app_return"])
     return returns["frontend_return"]
+
+@app.post("/guide_title")
+@cross_origin()
+def add_guide_title():
+    data = request.get_json()
+    current_guide = guides[find_guide_index(guides=guides, guide_uuid=data["uuid"])]
+    current_guide.set_title(data["title"])
+    return Response("Guide title added successfully", 201)
     
 
 app.run()
