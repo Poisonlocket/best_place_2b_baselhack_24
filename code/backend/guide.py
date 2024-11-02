@@ -2,8 +2,8 @@ import uuid
 from section import Section
 
 class Guide:
-    def __init__(self, title, sections=[]):
-        self.title = title
+    def __init__(self, sections=[]):
+        self.title = ""
         self.sections = sections
         self._uuid = uuid.uuid4()
 
@@ -13,8 +13,9 @@ class Guide:
     def get_title(self):
         return self.title
     
-    def modify_title(self, title):
+    def set_title(self, title):
         self.title = title
+
 
     def add_section(self, section):
         if isinstance(section, Section):
@@ -22,14 +23,8 @@ class Guide:
         else:
             raise TypeError("Only Section instances can be added to Guide sections")
         
-    def remove_section(self, section):
-        if isinstance(section, Section):
-            try:
-                self.sections.remove(section)
-            except:
-                raise Exception("Section not found in this guide!")
-        else:
-            raise TypeError("Only Section instances can be removed from Guide sections")
+    def remove_sections(self):
+        self.sections = []
 
     def __str__(self):
         sections_str = "\n\n".join(section.get_title for section in self.sections)

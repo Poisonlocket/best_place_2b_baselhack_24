@@ -1,12 +1,7 @@
 class Section:
-    def __init__(self, title):
-        self.title = title
+    def __init__(self):
         self.img_ids = []
         self.text = ""
-
-    @property
-    def get_title(self):
-        return self.title
 
     @property
     def get_img_ids(self):
@@ -16,20 +11,16 @@ class Section:
     def get_text(self):
         return self.text
 
-    def add_image(self, image):
-        return # TO BE MODIFIED
-
-    def modify_image(self, image):
-        return # TO BE MODIFIED
+    # Input: image path
+    def add_image(self, image: str):
+        self.img_ids.append(image)
     
-    def remove_image(self, image):
-        return # TO BE MODIFIED
+    def remove_image(self, image: str):
+        self.img_ids.remove(image)
     
-    def add_text(self, text):
-        return # TO BE MODIFIED
+    # Input: text block (string)
+    def set_text(self, text: str):
+        self.text = text
     
-    def modify_text(self, text):
-        return # TO BE MODIFIED
-    
-    def remove_text(self, text):
-        return # TO BE MODIFIED
+    def remove_text(self, text: str):
+        self.text = ""
