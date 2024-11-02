@@ -23,13 +23,18 @@ def upload_images():
             image.save(filepath)
         else:
             raise TypeError("Invalid file type for image file: ", image.filename)
+
+    return f"Images uploaded successfully"
         
 def upload_audio():
-    audio = request.files.get('audio')
+    audio = request.files.getlist('audio')
 
-    if audio and allowed_audio_file(audio.filename):
-        filename = audio.filename
-        filepath = os.path.join(AUDIO_FOLDER, filename)
-        audio.save(filepath)
-    else:
-        raise TypeError("Invalid file type for audio file: ", audio.filename)
+    for audi in audio:
+        if audi and allowed_audio_file(audi.filename):
+            filename = audi.filename
+            filepath = os.path.join(AUDIO_FOLDER, filename)
+            audi.save(filepath)
+        else:
+            raise TypeError("Invalid file type for audio file: ", audio.filename)
+
+    return f"Images uploaded successfully"
