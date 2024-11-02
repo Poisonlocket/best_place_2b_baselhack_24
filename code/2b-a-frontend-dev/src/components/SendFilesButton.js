@@ -1,26 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from "flowbite-react"
 import axios from 'axios';
 import FormData from 'form-data';
-import imageFile from '../assets/test1.jpg';
 
-class FileWithID{
-	constructor(fileContent, id="no_id", step_number, image_number){
-    	this.fileContent = fileContent;
-      this.id = id;
-      this.step_number = step_number;
-      this.image_number = image_number;
-    }
-  	displayInfo(){
-    	return "" + this.id + "." + this.step_number + "." + this.image_number + ".jpg";
-    }
-}
+function SendFilesButton({ filesWithID }) {
+  const [guideID, setGuideID] = useState("no_id")
 
-function SendFilesButton(files) {
   async function getData() {
     let data = new FormData();
-    for(let file of files) {
-      data.append('awesome_files', file.fileContent, file.displayInfo());
+    for(let file of filesWithID) {
+      if(file) {
+        data.append('awesome_files', file.fileContent, guideID + "." + file.displayInfo());
+      }
     }
     return data;
   }
@@ -37,6 +28,7 @@ function SendFilesButton(files) {
     })
       .then((response) => {
         // TODO: add response to state here
+        setGuideID(response.body.guide_id)
         console.log(response)
       }).catch((error) => {
         console.error(error)
@@ -44,7 +36,6 @@ function SendFilesButton(files) {
   }
 
   return (
-    id &&
     <div>
       <Button onClick={storeImages} >Save</Button>
     </div>
