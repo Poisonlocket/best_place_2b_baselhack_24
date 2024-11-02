@@ -1,4 +1,7 @@
 import os
+from os import listdir
+from os.path import isfile, join
+
 import sys
 from typing import Dict, List
 
@@ -16,10 +19,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from ai.ai_functions import *
 
+# id and name of the hardcoded guide
+HARDCODED_GUIDES = ['pass_time']
+
 POSSIBLE_OUTCOMES = ['ADD', 'REMOVE', 'CHANGE VIEW']
 
 IMAGE_FOLDER = 'uploads/images'
 AUDIO_FOLDER = 'uploads/audio'
+
+ALLOWED_TEXT_EXTENSIONS = ['txt']
 ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg']
 ALLOWED_AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav', 'ogg']
 
@@ -84,7 +92,7 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
             file.save(filepath)
 
                 
-            # frontend sends the whole guide            
+            # frontend sends the whole guide 
             if step_sequence in sections:
                 current_section = sections[step_sequence]
             else:
@@ -131,6 +139,11 @@ def guide_list(guides):
     for guide in guides:
         guide_uuids_list.append(guide.get_uuid())
         guide_titles_list.append(guide.get_title())
+
+    # title of the hardcoded guide is its id
+    for guide in HARDCODED_GUIDES:
+        guide_uuids_list.append(guide)
+        guide_titles_list.append(guide)
     
     guide_list_string = f'{{"guides":{guide_uuids_list}, "titles":{guide_titles_list}}}'
     return guide_list_string
@@ -139,11 +152,63 @@ def unique_guide(guides, guide_uuid):
     # creates the json response for the frontend for a single uuid
     current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_uuid)]
     section_list = []
+
+    # hardcoded guides
+    sections = {}
+    if guide_uuid in HARDCODED_GUIDES:
+        hardcoded_path = "../../assets"
+        hc_path = os.path.join(hardcoded_path, guide_uuid)
+        # read the image files 
+        onlyfiles = [f for f in listdir(hc_path) if isfile(join(hc_path, f))]
+        # print("all files:", onlyfiles)
+
+        current_guide = Guide()
+        current_guide._uuid = guide_uuid
+
+        for hc_file in onlyfiles:
+            hc_file_path = os.path.join(hardcoded_path, guide_uuid, hc_file)
+
+            name_list = split_filename(hc_file)
+            # print("number of elements in name: ", len(name_list))
+            if len(name_list) == 4:
+                guide_uuid = name_list[0]
+                step_sequence = name_list[1]
+                file_sequence = name_list[2]
+                file_extension = name_list[3]
+            elif len(name_list) == 3:
+                guide_uuid = name_list[0]
+                step_sequence = name_list[1]
+                file_extension = name_list[2]
+
+            # if we already have created this section add to it otherwise create a new one
+            if step_sequence in sections:
+                current_section = sections[step_sequence]
+            else:
+                current_section = Section()
+
+            if file_extension in ALLOWED_IMAGE_EXTENSIONS:
+                current_section.add_image(hc_file)
+
+            if file_extension in ALLOWED_TEXT_EXTENSIONS:
+                with open(hc_file_path, 'r') as file:
+                    file_text = file.read()
+                    current_section.set_text(file_text)
+
+            sections[step_sequence] = current_section
+
+            sections = dict(sorted(sections.items()))
+
+            for section in sections.values():
+                current_guide.add_section(section)
+    # finished creation of the guide
+  
+    # read the guide as json format
     for section in current_guide.sections:
         section_json = {}
         section_json["img_ids"] = section.get_img_ids() 
         section_json["text"] = section.get_text()
         section_list.append(section_json)
+
     return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{section_list}}}'
 
 def guide_image_data(guides, guide_id):
