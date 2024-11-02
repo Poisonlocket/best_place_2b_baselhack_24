@@ -40,3 +40,7 @@ Analog use
 curl -i -X POST -H "Content-Type: multipart/form-data" -F "audio=@/home/user/Music/never_gonna_give_you_up.mp3" http://127.0.0.1:5000/upload/audio
 ``` 
 to upload audio.
+
+### AI transform from input file
+
+Start transform from a random ```input_text.txt``` with the e.g following keywords ```beginnen```, ```anschliessend```, ```danach```, ```als nächstes```
