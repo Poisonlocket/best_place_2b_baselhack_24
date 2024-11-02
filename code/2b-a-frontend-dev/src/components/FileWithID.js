@@ -1,11 +1,12 @@
 class FileWithID {
-	constructor(fileContent, step_number, image_number){
+	constructor(fileContent, step_number, file_number, isImage) {
     	this.fileContent = fileContent;
       this.step_number = step_number;
-      this.image_number = image_number;
+      this.file_number = file_number;
+      this.isImage = isImage;
     }
   	displayInfo(){
-    	return "" + this.step_number + "." + this.image_number + ".jpg";
+    	return "" + this.step_number + "." + this.image_number + (this.isImage ? ".jpg" : ".ogg");
     }
 }
 
