@@ -66,12 +66,13 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
                     current_guide.remove_sections()
 
-            new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_sequence + "." + file_extension
-
+            new_filename = ""
             if file_extension in ALLOWED_IMAGE_EXTENSIONS:
+                new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_sequence + "." + file_extension
                 filepath = os.path.join(IMAGE_FOLDER, new_filename)
 
             elif file_extension in ALLOWED_AUDIO_EXTENSIONS:
+                new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_extension
                 filepath = os.path.join(AUDIO_FOLDER, new_filename)
                 
             file.save(filepath)
