@@ -20,9 +20,26 @@ Thanks a lot!
 
 jk, we don't do documentation (read react docu)
 
+if you're not a nerd:
+use npm install to get dependencies
+then run:
+```sh
+npm start
+```
+
+### AI
+install openai-whisper
+fyi this downloads a few packages of ca. 2 Gb
+```sh
+pip install openai-whisper
+```
+
 ### Backend
 
 install flask and flask-cors
+```sh
+pip install flask flask-cors
+```
 
 Start the backend flask server with 
 ```sh

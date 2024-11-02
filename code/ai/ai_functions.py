@@ -13,7 +13,7 @@ def extract_steps(text):
     steps = []
     step_number = 1
     for sentence in sentences:
-        if any(keyword in sentence.lower() for keyword in ["beginnen", "anschliessend", "danach", "als nächstes"]):
+        if any(keyword in sentence.lower() for keyword in ["begin", "subsequently", "after that", "next"]):
             steps.append(f"Step {step_number}: {sentence}")
             step_number += 1
         else:
@@ -24,7 +24,7 @@ def extract_steps(text):
     return steps
 
 # Function to format the steps into a manual
-def format_manual(title, steps):
+def format_manual(steps):
     #manual = f"# {title}\n\n" # If you want to add a title
     manual = "## Installation Manual\n\n"
     for step in steps:
@@ -37,7 +37,7 @@ def transcribe_and_format_audio(audio_file):
 
     # Transcribe the audio using Whisper
     try:
-        result = model.transcribe(audio_file)
+        result = model.transcribe("../backend/uploads/audio/"+audio_file)
         text = result['text']
     except Exception as e:
         print(f"Failed to transcribe audio: {e}")

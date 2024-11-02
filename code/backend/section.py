@@ -3,11 +3,9 @@ class Section:
         self.img_ids = []
         self.text = ""
 
-    @property
     def get_img_ids(self):
         return self.img_ids
 
-    @property
     def get_text(self):
         return self.text
 
