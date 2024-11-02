@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Carousel } from "flowbite-react";
+import { Progress } from "flowbite-react";
 
 const imagesWithDescriptions = [
 {
@@ -31,21 +32,40 @@ const imagesWithDescriptions = [
 ];
 
 const CarrouselView = () => {
+const [currentSlide, setCurrentSlide] = useState(-1);
+const handleSlideChange = (newSlide) => {
+    setCurrentSlide(newSlide);
+};
+
+const totalSlides = imagesWithDescriptions.length;
+  const progressPercentage = ((currentSlide + 1) / totalSlides) * 100;
+
 return (
-    <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-    <Carousel slide={false}>
+    <div>
+    <div className="h-80 sm:h-78 xl:h-80 2xl:h-96">
+        <Carousel slide={false} onSlideChange={handleSlideChange}>
         {imagesWithDescriptions.map((image, index) => (
-        <div key={index} className="flex items-center justify-between w-full">
+            <div key={index} className="flex items-center justify-between w-full">
             <img src={image.src} alt={image.alt} className="w-1/2" />
             <div className="w-1/2 pl-4">
-            <h3 className="text-lg font-semibold">{image.alt}</h3>
-            <p className="text-gray-600">{image.description}</p>
+                <h3 className="text-lg font-semibold">{image.alt}</h3>
+                <p className="text-gray-600">{image.description}</p>
             </div>
-        </div>
+            </div>
         ))}
-    </Carousel>
+        </Carousel>
+    </div>
+    <div className="mt-4">
+        <Progress 
+        progress={Math.max(progressPercentage, 0)}
+        textLabel={`${Math.round(progressPercentage)}%`}
+        size="lg" 
+        labelProgress 
+        />
+    </div>
     </div>
 );
 };
 
 export default CarrouselView;
+
