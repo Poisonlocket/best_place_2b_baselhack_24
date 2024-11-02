@@ -114,7 +114,7 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
         all_images = []
         for section in sections.values():
             all_images.append(section.get_img_ids())
-        guide_texts = "dummy text" #gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
+        guide_texts = gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
         index = 0
         for section in sections.values():
             section.set_text(guide_texts[index])
