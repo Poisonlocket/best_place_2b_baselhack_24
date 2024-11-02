@@ -1,6 +1,6 @@
-// components/SectionView.js
 import React from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import ReactMarkdown from "react-markdown"; // Import react-markdown
 
 const SectionView = ({ section, onEdit, onDelete }) => {
     return (
@@ -54,9 +54,9 @@ const SectionView = ({ section, onEdit, onDelete }) => {
                             Your browser does not support the audio element.
                         </audio>
                     )}
-                    <p className="text-gray-700 bg-gray-100 p-2 rounded-md text-sm">
-                        {section.instructionText || "No instructions available."}
-                    </p>
+                    <div className="text-gray-700 bg-gray-100 p-2 rounded-md text-sm">
+                        <ReactMarkdown>{section.instructionText || "No instructions available."}</ReactMarkdown>
+                    </div>
                 </div>
             </div>
         </div>

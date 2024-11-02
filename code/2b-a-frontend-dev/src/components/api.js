@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Guide } from "./model";
+import { Guide, Section } from "./model";
 import { generateTestGuide } from './test_data';
 // api.js
 export const saveAndProcessGuide = async ({ guide }) => {
@@ -38,7 +38,7 @@ function guideToData(guides) {
 }
 
 async function storeImages(data) {
-    axios.post(process.env.REACT_APP_API_URL + "/upload", data, {
+    axios.post("" + process.env.REACT_APP_API_URL + "/upload", data, {
         headers: {
             'accept': 'application/json',
             'Content-Encoding': 'gzip',
@@ -53,9 +53,54 @@ async function storeImages(data) {
     });
 }
 
+async function callGuide(id) {
+    axios({
+        method: 'get',
+        url: "" + process.env.REACT_APP_API_URL + '/guides/' + id,
+    }).then(function (response) {
+        console.log(response.data);
+        return response.data;
+    }).catch((error) => {
+        console.log(error.message);
+        return null;
+    });
+}
+
+async function callGuideImages(id) {
+    axios({
+        method: 'get',
+        url: "" + process.env.REACT_APP_API_URL + '/get_images/' + id,
+    }).then(function (response) {
+        console.log("images returned");
+        return response.data.images;
+    }).catch((error) => {
+        console.log(error.message);
+        return null;
+    });
+}
+
+function responseDataToGuide(responseData, responseImages) {
+    let name = responseData.title;
+    let uuid = responseData.uuid;
+    let sections = [];
+    for(let i = 0; i < responseData.sections.length; i++) {
+        let instructionText = responseData.sections[i].text;
+        let images = [];
+        for(let j = 0; j < responseImage[i].length; j++) {
+            images.append(responseImages[i][j]);
+        }
+        let newSection = new Section(i, name, images, null, instructionText);
+        sections.append(newSection);
+    }
+    return new Guide(name, uuid, "", "", sections);
+}
 
 // api.js
 export const getGuide = async (id) => {
-    
+    let responseData = callGuide(id);
+    let responseImages = callGuideImages(id);
+    if(responseData && responseImages) {
+        return responseDataToGuide(responseData, responseImages);
+    }
     return generateTestGuide();
 };
