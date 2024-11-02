@@ -18,7 +18,7 @@ function SendFilesButton({ filesWithID }) {
 
   async function storeImages() {
     const data = await getData()
-    axios.post("http://localhost:5000/upload", data, {
+    axios.post(process.env.REACT_APP_API_URL + "/upload", data, {
       headers: {
         'accept': 'application/json',
         'Content-Encoding': 'gzip',
