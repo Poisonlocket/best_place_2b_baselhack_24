@@ -28,3 +28,5 @@ class Guide:
     def __str__(self):
         sections_str = "\n\n".join(section.get_title for section in self.sections)
         return f"Guide Title: {self.title}\n\n{sections_str}"
+
+    
