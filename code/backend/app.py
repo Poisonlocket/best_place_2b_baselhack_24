@@ -1,3 +1,4 @@
+import flask
 from flask import Flask, Response, Request, request
 from flask_cors import CORS, cross_origin
 from guide import Guide
@@ -15,9 +16,10 @@ def creators() -> str:
     return "This Backend was built by Leonard, Jon and Lorenzo "
 
 
-@app.get("/app")
-def hello() -> str:
-    return "henlo"
+@app.get("/")
+def hello():
+    return flask.redirect("/418", 302)
+
 
 
 # very important endpoint, serving lots of tea
