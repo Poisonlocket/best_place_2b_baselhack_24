@@ -27,7 +27,6 @@ function SendFilesButton({ filesWithID }) {
       }
     })
       .then((response) => {
-        // TODO: add response to state here
         setGuideID(response.data.guide_id)
         console.log(response.data.guide_id)
       }).catch((error) => {
