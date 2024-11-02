@@ -23,9 +23,9 @@ function OurNavbar() {
       <Navbar.Collapse>
         <Navbar.Link href="/">Home</Navbar.Link>
         <Navbar.Link href="/overview">Guide Overview</Navbar.Link>
-        <Navbar.Link href="/view">View</Navbar.Link>
-        <Navbar.Link href="/edit">Edit</Navbar.Link>
-        <Navbar.Link href="/test">Test</Navbar.Link>
+        <Navbar.Link href="/view/pen">View</Navbar.Link>
+        {/* <Navbar.Link href="/edit">Edit</Navbar.Link> */}
+        {/* <Navbar.Link href="/test">Test</Navbar.Link> */}
       </Navbar.Collapse>
     </Navbar>
   );
