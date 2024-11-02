@@ -15,7 +15,7 @@ const HomeComponent = () => {
             </div>
             <div className="Menu flex-1 flex flex-col items-center justify-center"> 
                 <h1 className="text-6xl font-bold text-center">SmartGuide</h1>
-                <h2 className="text-xl text-gray-600 px-1.5 text-center">Simple creation. Simple Use</h2>
+                <h2 className="text-xl text-gray-600 px-1.5 text-center">Simple creation. Simple Use!</h2>
                 <div className="flex space-x-4 mt-4"> {/* Add space between buttons and margin on top */}
                     <Link to="/view">
                         <button type="button" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
