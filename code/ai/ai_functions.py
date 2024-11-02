@@ -13,7 +13,7 @@ def extract_steps(text):
     steps = []
     step_number = 1
     for sentence in sentences:
-        if any(keyword in sentence.lower() for keyword in ["beginnen", "anschliessend", "danach", "als nächstes"]):
+        if any(keyword in sentence.lower() for keyword in ["begin", "subsequently", "after that", "next"]):
             steps.append(f"Step {step_number}: {sentence}")
             step_number += 1
         else:
