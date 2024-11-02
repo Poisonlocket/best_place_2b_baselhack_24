@@ -9,3 +9,5 @@ code/backend/uploads/*
 *.txt
 
 !**requirements.txt
+
+**.env

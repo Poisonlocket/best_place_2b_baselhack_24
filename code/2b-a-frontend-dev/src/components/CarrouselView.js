@@ -1,14 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Carousel, Progress } from "flowbite-react";
+import ReactMarkdown from "react-markdown";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 const CarrouselView = ({ sections }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [selectedImageIndices, setSelectedImageIndices] = useState(
-        sections.map(() => 0) // Initialize with 0 for each section
+        sections.map(() => 0)
     );
 
-    // Log sections to confirm data
     useEffect(() => {
         console.log("Sections data:", sections);
     }, [sections]);
@@ -16,12 +17,10 @@ const CarrouselView = ({ sections }) => {
     const totalSlides = sections ? sections.length : 0;
     const progressPercentage = totalSlides > 1 ? ((currentSlide + 1) / totalSlides) * 100 : 0;
 
-    // Set the current section based on the carousel slide
     const handleSlideChange = (newSlide) => {
         setCurrentSlide(newSlide);
     };
 
-    // Update selected image index for the current section
     const selectImage = (index) => {
         const updatedIndices = [...selectedImageIndices];
         updatedIndices[currentSlide] = index;
@@ -29,21 +28,53 @@ const CarrouselView = ({ sections }) => {
     };
 
     return (
-        <div className="w-full max-w-6xl mx-auto flex flex-col min-h-full">
+        <div className="w-full max-w-6xl mx-auto flex flex-col min-h-full pb-20">
             {/* Carousel Content */}
-            <div className="flex-grow">
+            <div className="flex-grow relative">
                 {totalSlides > 0 ? (
-                    <Carousel slide={false} indicators={false} onSlideChange={handleSlideChange}>
+                    <Carousel
+                        slide={false}
+                        indicators={false}
+                        onSlideChange={handleSlideChange}
+                        leftControl={
+                            <SlArrowLeft 
+                                style={{
+                                    position: "absolute",
+                                    left: "-6rem", // Adjust to position further out
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    zIndex: 10,
+                                    height: 80,
+                                    width: 80
+                                }}
+                                className="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600"
+                            />
+                           
+                        }
+                        rightControl={
+                            <SlArrowRight 
+                                style={{
+                                    position: "absolute",
+                                    right: "-3rem", // Adjust to position further out
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    zIndex: 10,
+                                    height: 80,
+                                    width: 80
+                                }}
+                                className="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600"
+                            />
+                                
+                           
+                        }
+                    >
                         {sections.map((section, index) => (
-                            <div key={index} className="relative flex flex-col md:flex-row items-start justify-between w-full h-full p-6 space-y-4 md:space-y-0 md:space-x-6">
-                                {/* Step Number */}
-                                <div className="text-lg font-semibold text-gray-700 absolute top-4 left-4">
-                                    Step {section.number}
-                                </div>
-
+                            <div
+                                key={index}
+                                className="relative flex flex-col md:flex-row items-start justify-between w-full h-full p-2 space-y-1 md:space-y-0 md:space-x-2"
+                            >
                                 {/* Images on the Left */}
-                                <div className="flex flex-col items-center w-full md:w-1/2">
-                                    {/* Main Display Image */}
+                                <div className="flex flex-col items-center w-5/12 relative">
                                     {section.images[selectedImageIndices[index]] ? (
                                         <div className="relative">
                                             <img
@@ -64,10 +95,16 @@ const CarrouselView = ({ sections }) => {
                                         {section.images.map((image, idx) => (
                                             <div
                                                 key={idx}
-                                                className={`relative w-20 h-20 rounded cursor-pointer overflow-hidden ${selectedImageIndices[index] === idx ? 'ring-4 ring-blue-500' : ''}`}
+                                                className={`relative w-20 h-20 rounded cursor-pointer overflow-hidden ${
+                                                    selectedImageIndices[index] === idx ? "ring-4 ring-blue-500" : ""
+                                                }`}
                                                 onClick={() => selectImage(idx)}
                                             >
-                                                <img src={image.fileContent} alt={image.image_name} className="w-full h-full object-cover" />
+                                                <img
+                                                    src={image.fileContent}
+                                                    alt={image.image_name}
+                                                    className="w-full h-full object-cover"
+                                                />
                                                 <div className="absolute top-1 left-1 bg-black bg-opacity-50 text-white px-1 py-0.5 text-xs rounded-tr-md rounded-bl-md">
                                                     #{image.image_number}
                                                 </div>
@@ -77,9 +114,13 @@ const CarrouselView = ({ sections }) => {
                                 </div>
 
                                 {/* Text on the Right */}
-                                <div className="w-full md:w-1/2">
-                                    <h2 className="text-2xl font-bold mb-4">{section.title || "Untitled Section"}</h2>
-                                    <p className="text-gray-700">{section.instructionText || "No description available."}</p>
+                                <div className="w-full md:w-7/12">
+                                    <h2 className="text-2xl font-bold mb-4">
+                                        {section.number} {section.title || "Untitled Section"}
+                                    </h2>
+                                    <div className="text-gray-700">
+                                        <ReactMarkdown>{section.instructionText || "No description available."}</ReactMarkdown>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -89,8 +130,8 @@ const CarrouselView = ({ sections }) => {
                 )}
             </div>
 
-            {/* Progress Bar at the Bottom */}
-            <div className="mt-4 w-full">
+            {/* Fixed Progress Bar at the Bottom */}
+            <div className="fixed bottom-0 left-0 right-0 w-full max-w-6xl mx-auto bg-white px-4 py-2 shadow-lg">
                 <Progress
                     progress={progressPercentage}
                     textLabel={`${Math.round(progressPercentage)}%`}

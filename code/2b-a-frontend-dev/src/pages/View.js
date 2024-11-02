@@ -24,7 +24,7 @@ const View = () => {
     }, []);
 
     return (
-        <div className="w-full min-h-screen p-4 bg-gray-100 flex flex-col items-center">
+        <div className="w-full min-h-max p-4 flex flex-col items-center">
             {/* Guide Title */}
             {loading ? (
                 <p className="text-center">Loading SmartGuide...</p>
@@ -33,7 +33,7 @@ const View = () => {
             ) : (
                 <>
                     <div className="w-full max-w-6xl mb-6">
-                        <h1 className="text-4xl font-bold text-center md:text-left">{guide.name}</h1>
+                        <h1 className="text-4xl font-bold text-center md:text-left">{guide.name}</h1> <div>v1.3</div>
                     </div>
 
                     {/* Carousel View */}
