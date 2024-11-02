@@ -1,12 +1,12 @@
 import whisper
 import re
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
 # Load environment variables from the .env file
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+#openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # A simple function to split the transcription into sentences
 def split_into_sentences(text):
@@ -29,19 +29,20 @@ def extract_steps_hardcode(text):
                 steps.append(sentence)
     return steps
 
-# Function to format the steps into a manual
-def format_manual(steps):
-    #manual = f"# {title}\n\n" # If you want to add a title
-    manual = "## Installation Manual\n\n"
+def format_section(steps):
     for step in steps:
         manual += f"{step}\n\n"
     return manual
 
 def extract_steps_openai(prompt_text, nb_steps):
-    prompt_beginning = f"Please summarize this text from a manual into a series of exactly {nb_steps} steps. Include step numbers in the response (e.g. step 1, step 2, etc), starting with 1."
+    prompt_beginning = f"Please summarize this text from a manual into a series of exactly {nb_steps} steps. Include step numbers in the response (e.g. step 1, step 2, etc), starting with 1. Do not include any line breaks."
     total_prompt = prompt_beginning + prompt_text
 
-    response = openai.ChatCompletion.create(
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
+    )
+
+    response = client.chat.completions.create(
         model="gpt-4-turbo",
         messages=[
             {"role": "user", "content": total_prompt}
@@ -50,7 +51,7 @@ def extract_steps_openai(prompt_text, nb_steps):
         temperature=0.7       # Controls randomness; higher values yield more creative responses
     )
 
-    text_with_steps = response['choices'][0]['message']['content']
+    text_with_steps = response.choices[0].message.content
     return text_with_steps
 
 def transcribe_and_format_audio(audio_file, nb_steps):
@@ -67,6 +68,6 @@ def transcribe_and_format_audio(audio_file, nb_steps):
 
     # Extract steps from the transcription
     steps = extract_steps_openai(translated_text, nb_steps) # Choose which method to use (hardcode or openai)
-    formatted_text = format_manual(steps)
+    formatted_text = format_section(steps)
 
     return formatted_text
