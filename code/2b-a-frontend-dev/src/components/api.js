@@ -8,6 +8,7 @@ export const saveAndProcessGuide = async ({ guide }) => {
         //await new Promise(resolve => setTimeout(resolve, 1000));
         let data = guideToData(guide)
         let new_uuid = await storeImages(data);
+        await storeTitle(guide.title, new_uuid);
         // Mock response data
         // const response = { message: "Guide processed successfully", guide};
         // console.log("Fake API response:", response);
@@ -44,6 +45,26 @@ async function storeImages(data) {
             'Content-Encoding': 'gzip',
             'Accept-Language': 'en-US,en;q=0.8',
             'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+        }
+    }).then((response) => {
+        console.log(response.data.guide_id)
+        return response.data.guide_id;
+    }).catch((error) => {
+        console.error(error)
+    });
+}
+
+async function storeTitle(title, uuid) {
+    axios.post("" + process.env.REACT_APP_API_URL + "/upload", data, {
+        headers: {
+            'accept': 'application/json',
+            'Content-Encoding': 'gzip',
+            'Accept-Language': 'en-US,en;q=0.8',
+            'Content-Type': `application/json`,
+        },
+        body: {
+            'uuid': "" + uuid,
+            'title': "" + title
         }
     }).then((response) => {
         console.log(response.data.guide_id)
