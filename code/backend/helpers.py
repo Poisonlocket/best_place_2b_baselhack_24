@@ -119,4 +119,16 @@ def guide_list(guides):
         guide_uuids_list.append(guide.get_uuid())
         guide_titles_list.append(guide.get_title())
     
-    return f'{{"guides":{guide_uuids_list}, "titles":{guide_titles_list}}}'
+    guide_list_string = f'{{"guides":{guide_uuids_list}, "titles":{guide_titles_list}}}'
+    return guide_list_string
+
+def unique_guide(guides, guide_uuid):
+    # creates the json response for the frontend for a single uuid
+    current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_uuid)]
+    section_list = []
+    for section in current_guide.sections:
+        section_json = {}
+        section_json["img_ids"] = section.get_img_ids() 
+        section_json["text"] = section.get_text()
+        section_list.append(section_json)
+    return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{section_list}}}'
