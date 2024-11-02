@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { Guide } from "./model";
 // api.js
 export const saveAndProcessGuide = async ({ guide }) => {
     try {
@@ -23,11 +25,11 @@ function guideToData(guides) {
     for (let i = 0; i < guides.sections.length; i++) {
         let currSection = guides.sections[i];
         for (let j = 0; j < currSection.images.length; j++) {
-            data.append('awesome_files', currSections.images[j], "" + guides.uuid 
+            data.append('awesome_files', currSection.images[j], "" + guides.uuid 
                 + "." + i + "." + j + ".jpg");
         }
         if(currSection.recording) {
-            data.append('awesome_files', currSections.images[j], "" + guides.uuid 
+            data.append('awesome_files', currSection.recording, "" + guides.uuid 
                 + "." + i + "." + currSection.images.length + ".ogg");
         }
     }
