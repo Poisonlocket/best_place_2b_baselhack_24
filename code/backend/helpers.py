@@ -150,7 +150,6 @@ def guide_list(guides):
 
 def unique_guide(guides, guide_uuid):
     # creates the json response for the frontend for a single uuid
-    current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_uuid)]
     section_list = []
 
     # hardcoded guides
@@ -201,6 +200,8 @@ def unique_guide(guides, guide_uuid):
             for section in sections.values():
                 current_guide.add_section(section)
     # finished creation of the guide
+    else:
+        current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_uuid)]
   
     # read the guide as json format
     for section in current_guide.sections:
