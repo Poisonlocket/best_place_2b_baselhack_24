@@ -10,7 +10,7 @@ from section import Section
 IMAGE_FOLDER = 'uploads/images'
 AUDIO_FOLDER = 'uploads/audio'
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'm4a', 'wav'}
+ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'm4a', 'wav', 'ogg'}
 
 def allowed_upload_file(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in (ALLOWED_IMAGE_EXTENSIONS or ALLOWED_IMAGE_EXTENSIONS)
