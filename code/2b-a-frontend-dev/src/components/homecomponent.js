@@ -5,7 +5,7 @@ import peopleImage from '../assets/people.png'; // Import the image
 
 const HomeComponent = () => {
     return (
-        <div className="flex flex-col md:flex-row items-center justify-start p-4 h-[80vh]"> {/* Use flex-col for small screens */}
+        <div className="flex flex-col md:flex-row items-center justify-start p-4"> {/* Use flex-col for small screens */}
             <div className="people flex-1 flex-shrink-0 mb-4 md:mb-0 md:mr-[5px]"> {/* Add margin bottom for small screens */}
                 <img 
                     src={peopleImage} 

@@ -1,3 +1,4 @@
+// components/AudioCapture.js
 import React, { useState, useRef, useEffect } from 'react';
 import { FaMicrophone, FaStop, FaPlay, FaRedo, FaTrash } from 'react-icons/fa';
 
@@ -6,7 +7,6 @@ function AudioCapture() {
     const [audioURL, setAudioURL] = useState(null);
     const [recordingLength, setRecordingLength] = useState(0);
     const [recorder, setRecorder] = useState(null);
-    const [recordings, setRecordings] = useState([]);
     const [intervalId, setIntervalId] = useState(null);
 
     // Start or stop recording
@@ -25,12 +25,6 @@ function AudioCapture() {
         mediaRecorder.ondataavailable = (e) => {
             const newAudioURL = URL.createObjectURL(e.data);
             setAudioURL(newAudioURL);
-
-            // Add new recording to the list
-            setRecordings(prevRecordings => [
-                ...prevRecordings,
-                { id: prevRecordings.length + 1, src: newAudioURL }
-            ]);
         };
 
         mediaRecorder.start();
@@ -56,8 +50,8 @@ function AudioCapture() {
         }
     };
 
-    const handlePlayAudio = (src) => {
-        const audio = new Audio(src);
+    const handlePlayAudio = () => {
+        const audio = new Audio(audioURL);
         audio.play();
     };
 
@@ -67,10 +61,6 @@ function AudioCapture() {
         toggleRecording();
     };
 
-    const handleDeleteRecording = (id) => {
-        setRecordings(recordings.filter(record => record.id !== id));
-    };
-
     useEffect(() => {
         return () => {
             if (intervalId) clearInterval(intervalId);
@@ -78,59 +68,36 @@ function AudioCapture() {
     }, [intervalId]);
 
     return (
-        <div className="flex flex-col items-center p-4 space-y-4 bg-gray-100 rounded-lg">
-            <div className="flex items-center space-x-4">
+        <div className="flex flex-col items-center p-2 space-y-2 bg-gray-100 rounded-lg">
+            {/* Recording Control */}
+            <div className="flex items-center space-x-2">
                 <button
                     onClick={toggleRecording}
-                    className={`px-4 py-2 rounded-md text-white ${isRecording ? 'bg-red-500' : 'bg-green-500'}`}
+                    className={`p-2 rounded-full ${isRecording ? 'bg-red-500' : 'bg-green-500'} text-white`}
                 >
-                    {isRecording ? (
-                        <>
-                            <FaStop className="w-5 h-5 mr-2 inline" />
-                            Stop Recording
-                        </>
-                    ) : (
-                        <>
-                            <FaMicrophone className="w-5 h-5 mr-2 inline" />
-                            Start Recording
-                        </>
-                    )}
+                    {isRecording ? <FaStop size={18} /> : <FaMicrophone size={18} />}
                 </button>
 
                 {/* Recording length display */}
-                <div className="text-gray-700 font-semibold">
-                    {Math.floor(recordingLength / 60)
-                        .toString()
-                        .padStart(2, '0')}:{(recordingLength % 60).toString().padStart(2, '0')}
+                <div className="text-gray-700 font-semibold text-sm">
+                    {Math.floor(recordingLength / 60).toString().padStart(2, '0')}:{(recordingLength % 60).toString().padStart(2, '0')}
                 </div>
             </div>
 
-            {/* Audio Gallery */}
-            <div className="w-full bg-gray-100 p-4 rounded-lg space-y-4">
-                <h2 className="text-xl font-semibold">Recordings Gallery</h2>
-                <div className="flex flex-col space-y-2">
-                    {recordings.map(record => (
-                        <div key={record.id} className="flex flex-col items-center space-y-2 mt-4">
-                            <audio src={record.src} controls className="w-full" />
-
-                            <div className="flex space-x-4">
-                                <button onClick={() => handlePlayAudio(record.src)} className="px-4 py-2 bg-blue-500 text-white rounded-md">
-                                    <FaPlay className="w-5 h-5 mr-2 inline" />
-                                    Play
-                                </button>
-                                <button onClick={handleReRecord} className="px-4 py-2 bg-yellow-500 text-white rounded-md">
-                                    <FaRedo className="w-5 h-5 mr-2 inline" />
-                                    Re-record
-                                </button>
-                                <button onClick={() => handleDeleteRecording(record.id)} className="px-4 py-2 bg-red-500 text-white rounded-md">
-                                    <FaTrash className="w-5 h-5 mr-2 inline" />
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+            {/* Audio Controls */}
+            {audioURL && (
+                <div className="flex items-center space-x-2 mt-2">
+                    <button onClick={handlePlayAudio} className="p-2 bg-blue-500 text-white rounded-full">
+                        <FaPlay size={16} />
+                    </button>
+                    <button onClick={handleReRecord} className="p-2 bg-yellow-500 text-white rounded-full">
+                        <FaRedo size={16} />
+                    </button>
+                    <button onClick={() => setAudioURL(null)} className="p-2 bg-red-500 text-white rounded-full">
+                        <FaTrash size={16} />
+                    </button>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
