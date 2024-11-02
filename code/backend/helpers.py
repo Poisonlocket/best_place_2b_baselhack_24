@@ -11,6 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from ai.ai_functions import *
 
+POSSIBLE_OUTCOMES = ['ADD', 'REMOVE', 'CHANGE VIEW']
 
 IMAGE_FOLDER = 'uploads/images'
 AUDIO_FOLDER = 'uploads/audio'
@@ -98,14 +99,21 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
         else:
             raise TypeError("Invalid file type for uploaded file: ", file.filename)
 
-    if not has_audio:
-        # Iterate through Sections and for each --> send images to AI method
-        # Get text back for each Section
-        pass
-
     sections = dict(sorted(sections.items()))
     for section in sections.values():
         current_guide.add_section(section)
+
+    if not has_audio:
+        # Iterate through Sections --> send all images to AI method
+        # Get text back for each Section
+        all_images = []
+        for section in sections.values():
+            all_images.append(section.get_img_ids())
+        guide_texts = gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
+        index = 0
+        for section in sections.values():
+            section.set_text(guide_texts[index])
+            index += 1
 
 
     return {"frontend_return": f'{{"guide_id":"{frontend_guide_uuid}", "comment":"thank you for your service!"}}', "app_return": current_guide}

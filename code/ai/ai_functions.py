@@ -1,6 +1,11 @@
 import whisper
 import re
-#from pydub import AudioSegment
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv()
 
 # A simple function to split the transcription into sentences
 def split_into_sentences(text):
@@ -8,7 +13,7 @@ def split_into_sentences(text):
     return sentences
 
 # Function to identify and structure steps
-def extract_steps(text):
+def extract_steps_hardcode(text):
     sentences = split_into_sentences(text)
     steps = []
     step_number = 1
@@ -23,28 +28,45 @@ def extract_steps(text):
                 steps.append(sentence)
     return steps
 
-# Function to format the steps into a manual
-def format_manual(steps):
-    #manual = f"# {title}\n\n" # If you want to add a title
-    manual = "## Installation Manual\n\n"
+def format_section(steps):
     for step in steps:
         manual += f"{step}\n\n"
     return manual
 
-def transcribe_and_format_audio(audio_file):
+def extract_steps_openai(prompt_text, nb_steps):
+    prompt_beginning = f"Please summarize this text from a manual into a series of exactly {nb_steps} steps. Include step numbers in the response (e.g. step 1, step 2, etc), starting with 1. Do not include any line breaks."
+    total_prompt = prompt_beginning + prompt_text
+
+    client = OpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
+    )
+
+    response = client.chat.completions.create(
+        model="gpt-4-turbo",
+        messages=[
+            {"role": "user", "content": total_prompt}
+        ],
+        max_tokens=300,       # Adjust for response length
+        temperature=0.7       # Controls randomness; higher values yield more creative responses
+    )
+
+    text_with_steps = response.choices[0].message.content
+    return text_with_steps
+
+def transcribe_and_format_audio(audio_file, nb_steps):
     # Load the whisper model
     model = whisper.load_model("base")  # You can choose "small", "medium", or "large" models based on your needs
 
     # Transcribe the audio using Whisper
     try:
-        result = model.transcribe("../backend/uploads/audio/"+audio_file)
-        text = result['text']
+        result = model.transcribe(audio_file)
+        translated_text = result['text']
     except Exception as e:
         print(f"Failed to transcribe audio: {e}")
         exit(1)
 
     # Extract steps from the transcription
-    steps = extract_steps(text)
-    formatted_text = format_manual(steps)
+    steps = extract_steps_openai(translated_text, nb_steps) # Choose which method to use (hardcode or openai)
+    formatted_text = format_section(steps)
 
     return formatted_text
