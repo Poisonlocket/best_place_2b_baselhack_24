@@ -7,6 +7,7 @@ import { generateTestGuide } from "../components/test_data";
 import { FaSpinner } from "react-icons/fa";
 
 const Edit = () => {
+    //const { id } = useParams();
     const [guide, setGuide] = useState(generateTestGuide());
     const [editingSectionId, setEditingSectionId] = useState(null);
     const [loading, setLoading] = useState(false);
