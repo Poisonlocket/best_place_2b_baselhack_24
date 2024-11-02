@@ -13,8 +13,7 @@ function AllGuidesV2() {
     setError(null);
     axios({
       method: 'get',
-      url: 'https://localhost:5000/guides',
-      responseType: 'application/json'
+      url: 'http://localhost:5000/guides',
     }).then(function (response) {
       console.log(response);
       setGuideUUIDS(response.data.guides);
