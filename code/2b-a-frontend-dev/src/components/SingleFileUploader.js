@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import FileWithID from './FilesWithID';
 
-const SingleFileUploader = () => {
-  const [file, setFile] = useState(null);
+const SingleFileUploader = ({ setFile, file }) => {
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      setFile(new FileWithID(e.target.files[0], 0, 0));
     }
   };
 
@@ -14,13 +14,13 @@ const SingleFileUploader = () => {
       <div className="input-group">
         <input id="file" type="file" onChange={handleFileChange} />
       </div>
-      {file && (
+      {file && file.fileContent && (
         <section>
           File details:
           <ul>
-            <li>Name: {file.name}</li>
-            <li>Type: {file.type}</li>
-            <li>Size: {file.size} bytes</li>
+            <li>Name: {file.fileContent}</li>
+            <li>Type: {file.fileContent}</li>
+            <li>Size: {file.fileContent} bytes</li>
           </ul>
         </section>
       )}
