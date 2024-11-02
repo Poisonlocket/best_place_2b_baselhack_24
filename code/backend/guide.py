@@ -3,6 +3,7 @@ from section import Section
 
 class Guide:
     def __init__(self, sections=[]):
+        self.title = ""
         self.sections = sections
         self._uuid = str(uuid.uuid4())
 

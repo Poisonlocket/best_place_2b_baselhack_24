@@ -11,6 +11,7 @@ import Edit from "./pages/Edit";
 import View from "./pages/View";
 import Test from "./pages/Test";
 import OurFooter from './components/Footerbar';
+import GuideOverview from './pages/GuideOverview';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route path="/overview" element={<GuideOverview />} />
         <Route path="/edit" element={<Edit />} />
         <Route path="/view" element={<View />} />
         <Route path="/test" element={<Test />} />
