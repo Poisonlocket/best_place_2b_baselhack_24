@@ -3,8 +3,8 @@ import CarrouselView from "../components/Carrousel";
 
 const View = () => {
     return (
-        <div className="h-[78vh] mx-4 flex flex-col">
-            <h1 className="mb-4 text-4xl">Welcome to View</h1>
+        <div className="w-full min-h-screen p-8">
+            <h1 className="text-2xl font-bold mb-6">SmartGuide:</h1>
             <div className="flex-grow">
                 <CarrouselView />
             </div>
