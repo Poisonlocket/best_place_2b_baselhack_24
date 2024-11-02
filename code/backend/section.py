@@ -1,5 +1,5 @@
 class Section:
-    def __init__(self, title):
+    def __init__(self, title: str):
         self.title = title
         self.img_ids = []
         self.text = ""
@@ -16,20 +16,18 @@ class Section:
     def get_text(self):
         return self.text
 
-    def add_image(self, image):
-        return # TO BE MODIFIED
-
-    def modify_image(self, image):
-        return # TO BE MODIFIED
+    def add_image(self, image_id: str):
+        self.img_ids.append(image_id)
     
-    def remove_image(self, image):
-        return # TO BE MODIFIED
+    def remove_image(self, image_id: str):
+        self.img_ids.remove(image_id)
     
-    def add_text(self, text):
-        return # TO BE MODIFIED
+    def add_text(self, text:str):
+        if self.text == "":
+            self.text=text
     
-    def modify_text(self, text):
-        return # TO BE MODIFIED
+    def modify_text(self, text:str):
+        self.text = text
     
-    def remove_text(self, text):
-        return # TO BE MODIFIED
+    def remove_text(self):
+        self.text = ""

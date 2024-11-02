@@ -1,5 +1,6 @@
 import os
-from flask import request
+from flask import request, redirect
+
 
 IMAGE_FOLDER = 'uploads/images'
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -7,13 +8,13 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 AUDIO_FOLDER = 'uploads/audio'
 ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'm4a', 'wav'}
 
-def allowed_image_file(filename):
+def allowed_image_file(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
 
-def allowed_audio_file(filename):
+def allowed_audio_file(filename: str) -> bool:
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_AUDIO_EXTENSIONS
 
-def upload_images():
+def upload_images() -> str:
     images = request.files.getlist('images')
 
     for image in images:
@@ -26,7 +27,7 @@ def upload_images():
 
     return f"Images uploaded successfully"
         
-def upload_audio():
+def upload_audio() -> str:
     audio = request.files.getlist('audio')
 
     for audi in audio:
