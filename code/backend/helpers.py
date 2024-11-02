@@ -27,6 +27,7 @@ def find_guide_index(guides, guide_uuid):
 def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
     files = request.files.getlist('awesome_files')
 
+    has_audio = False
     guide_exists = False
     sections = {} # contains section object
 
@@ -42,6 +43,7 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
                 file_sequence = name_list[2]
                 file_extension = name_list[3]
             elif len(name_list) == 3:
+                has_audio = True
                 guide_uuid = name_list[0]
                 step_sequence = name_list[1]
                 file_extension = name_list[2]
@@ -87,6 +89,11 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
                 
         else:
             raise TypeError("Invalid file type for uploaded file: ", file.filename)
+
+    if not has_audio:
+        # Iterate through Sections and for each --> send images to AI method
+        # Get text back for each Section
+        pass
 
     sections = dict(sorted(sections.items()))
     for section in sections.values():
