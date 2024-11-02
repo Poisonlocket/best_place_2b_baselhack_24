@@ -69,7 +69,8 @@ def add_guide():
 @app.post("/upload")
 @cross_origin()
 def upload():
-    return upload_all()
+    returns = upload_all(guides)
+    return returns["frontend_return"]
     
 
 app.run()
