@@ -1,22 +1,9 @@
-import React, { useState } from 'react';
-import { Button } from "flowbite-react"
-import axios from 'axios';
-import FormData from 'form-data';
+import React from 'react';
 
 function AllGuides({ setIDList }) {
-  const [guideID, setGuideID] = useState("no_id")
-
-  async function getData() {
-    let data = new FormData();
-    for(let file of filesWithID) {
-      if(file) {
-        data.append('awesome_files', file.fileContent, guideID + "." + file.displayInfo());
-      }
-    }
-    return data;
-  }
 
   async function storeImages() {
+    /* call get on /guides endpoint
     const data = await getData()
     axios.post("http://localhost:5000/upload", data, {
       headers: {
@@ -32,11 +19,18 @@ function AllGuides({ setIDList }) {
       }).catch((error) => {
         console.error(error)
       });
+    */
   }
 
   return (
     <div>
-      <Button onClick={storeImages} >Save</Button>
+      <ul>
+        <li>Guide 1</li>
+        <li>Guide 2</li>
+        <li>Guide 3</li>
+        <li>Guide 4</li>
+        <li>Guide 5</li>
+      </ul>
     </div>
   );
 }
