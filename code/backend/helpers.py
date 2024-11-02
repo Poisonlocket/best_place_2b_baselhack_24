@@ -1,5 +1,5 @@
 import os
-from typing import Dict
+from typing import Dict, List
 
 from flask import request, redirect
 
@@ -14,7 +14,7 @@ ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'm4a', 'wav', 'ogg'}
 def allowed_upload_file(filename: str) -> bool:
     return '.' in filename and filename.split('.')[-1].lower() in (ALLOWED_IMAGE_EXTENSIONS or ALLOWED_AUDIO_EXTENSIONS)
 
-def split_filename(filename: str) -> [str]:
+def split_filename(filename: str) -> List[str]:
     return filename.split('.')
 
 def find_guide_index(guides, guide_uuid):
