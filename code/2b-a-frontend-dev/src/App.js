@@ -10,6 +10,8 @@ import Home from "./pages";
 import Edit from "./pages/Edit";
 import View from "./pages/View";
 import Test from "./pages/Test";
+import OurFooter from './components/Footerbar';
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/view" element={<View />} />
         <Route path="/test" element={<Test />} />
       </Routes>
+      <OurFooter />
     </Router>
   );
 }
