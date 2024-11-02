@@ -40,6 +40,7 @@ function Test() {
 
   return (
     <div>
+      <h1>Stores test file to backend. Need to start backend first: </h1>
       <Button onClick={storeImage} >Save</Button>
     </div>
   );
