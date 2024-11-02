@@ -50,11 +50,7 @@ def format_manual(title, steps):
 # Example title for the manual
 title = "Installation Guide for [Product Name]"
 
-# Generate the manual
-manual_text = format_manual(title, steps)
-print("Formatted Manual:")
-print(manual_text)
-
 # Optionally, save the manual to a text file
+manual_text = format_manual(title, steps)
 with open("installation_manual.txt", "w") as file:
     file.write(manual_text)
