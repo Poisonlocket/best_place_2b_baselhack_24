@@ -1,11 +1,10 @@
 import React from 'react';
-import FileWithID from './FilesWithID';
 
 const SingleFileUploader = ({ setFile, file }) => {
 
   const handleFileChange = (e) => {
     if (e.target.files) {
-      setFile(new FileWithID(e.target.files[0], 0, 0));
+      setFile(e.target.files[0]);
     }
   };
 
