@@ -15,3 +15,18 @@ You can use the MIT license in this template. Make sure to adjust the copy right
 You are also free to choose any other license - depending on the consensus of your team.
 
 Thanks a lot!
+
+
+### Backend
+
+Use 
+```sh 
+curl -i -X POST -H "Content-Type: multipart/form-data" -F "images=@/home/user/Pictures/pepe.jpg" -F "images=@/home/user/Pictures/hands.jpg" http://127.0.0.1:5000/upload/images
+``` 
+to upload multiple images.
+
+Analog use  
+```sh 
+curl -i -X POST -H "Content-Type: multipart/form-data" -F "audio=@/home/user/Music/never_gonna_give_you_up.mp3" http://127.0.0.1:5000/upload/audio
+``` 
+to upload audio.
