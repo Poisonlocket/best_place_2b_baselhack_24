@@ -1,8 +1,11 @@
 from flask import Flask, Response, Request, request
+from flask_cors import CORS, cross_origin
 from guide import Guide
-from helpers import upload_images, upload_audio
+from helpers import upload_all
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 guides: list[Guide] = []
 
@@ -54,6 +57,7 @@ def get_specific_guide(guide_id:int):
     return guides[guide_id]
 
 @app.post("/guides")
+@cross_origin()
 def add_guide():
     data = request.get_json()
     new_guide = Guide(title=data["title"], sections=data["sections"]) 
@@ -61,13 +65,10 @@ def add_guide():
     print(guides)
     return Response("Guide added successfully", 201)
 
-@app.post("/upload/images")
-def upload_file_images():
-    return upload_images()
-
-@app.post("/upload/audio")
-def upload_file_audio():
-    return upload_audio()
+@app.post("/upload")
+@cross_origin()
+def upload():
+    return upload_all()
     
 
 app.run()

@@ -16,10 +16,20 @@ You are also free to choose any other license - depending on the consensus of yo
 
 Thanks a lot!
 
+### Frontend
+
+jk, we don't do documentation (read react docu)
 
 ### Backend
 
-Use 
+install flask and flask-cors
+
+Start the backend flask server with 
+```sh
+python code/backend/app.py
+```
+
+To upload locally you can use 
 ```sh 
 curl -i -X POST -H "Content-Type: multipart/form-data" -F "images=@/home/user/Pictures/pepe.jpg" -F "images=@/home/user/Pictures/hands.jpg" http://127.0.0.1:5000/upload/images
 ``` 
