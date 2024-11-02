@@ -27,6 +27,49 @@ def transcribe_audio(audio_file):
         print(f"Error during transcription: {e}")
         return None
 
+def format_transcription(transcription):
+    # Split the transcription into sections based on transition words
+    sections = []
+    current_section = []
+
+    for line in transcription.split('. '):  # Assuming sentences are separated by periods
+        line = line.strip()
+        if not line:
+            continue
+
+        # Check for transition words and create sections
+        if "First," in line:
+            current_section = format_to_section(current_section, sections)
+
+        elif "Second," in line:
+            current_section = format_to_section(current_section, sections)
+
+        elif "Next," in line:
+            current_section = format_to_section(current_section, sections)
+
+        elif "Then," in line:
+            current_section = format_to_section(current_section, sections)
+
+        elif "Last," in line or "Lastly," in line or "Finally," in line:
+            current_section = format_to_section(current_section, sections)
+
+        # Add the current line to the current section
+        current_section.append(line)
+
+    # Append any remaining text
+    if current_section:
+        sections.append(" ".join(current_section))
+
+    return "\n".join(sections)
+
+
+def format_to_section(current_section, sections):
+    if current_section:
+        sections.append(" ".join(current_section))
+        current_section = []
+    sections.append("\n")
+    return current_section
+
 
 def main():
     audio_file = download_audio("https://www.youtube.com/watch?v=GXP0DnpHsCY")
@@ -36,8 +79,9 @@ def main():
         transcription = transcribe_audio(audio_file)
 
         if transcription:
+            formatted_transcription = format_transcription(transcription)
             with open("transcription.txt", "w") as f:
-                f.write(transcription)
+                f.write(formatted_transcription)
             print("Transcription completed and saved to transcription.txt")
         else:
             print("Transcription failed.")
