@@ -10,6 +10,8 @@ from section import Section
 import functools
 import operator
 
+import base64
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from ai.ai_functions import *
@@ -158,10 +160,9 @@ def guide_image_data(guides, guide_id):
 
     for filename in image_paths:
         file_path = os.path.join("./uploads/images", filename)
-        try:
-            file = open(file_path, 'r')  # Opens the file in read mode; adjust mode as needed
-            file_objects.append(file)
-        except FileNotFoundError:
-            print(f"File '{filename}' not found in directory images'")
+        
+        with open(file_path, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+            file_objects.append(encoded_string)
 
-    return file_objects
+    return f'{{"images":{file_objects} }}'
