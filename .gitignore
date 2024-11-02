@@ -7,3 +7,5 @@ code/backend/uploads/*
 *.mp4
 *.wav
 *.txt
+
+!**requirements.txt
