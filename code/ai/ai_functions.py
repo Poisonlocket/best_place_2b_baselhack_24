@@ -37,7 +37,7 @@ def transcribe_and_format_audio(audio_file):
 
     # Transcribe the audio using Whisper
     try:
-        result = model.transcribe("video_audio.wav")
+        result = model.transcribe(audio_file)
         text = result['text']
     except Exception as e:
         print(f"Failed to transcribe audio: {e}")
