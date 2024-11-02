@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Dict, List
 
 from flask import request, redirect
@@ -6,13 +7,21 @@ from flask import request, redirect
 from guide import Guide
 from section import Section
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from ai.ai_functions import *
+
+POSSIBLE_OUTCOMES = ['ADD', 'REMOVE', 'CHANGE VIEW']
+
 IMAGE_FOLDER = 'uploads/images'
 AUDIO_FOLDER = 'uploads/audio'
-ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-ALLOWED_AUDIO_EXTENSIONS = {'mp3', 'm4a', 'wav', 'ogg'}
+ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg']
+ALLOWED_AUDIO_EXTENSIONS = ['mp3', 'm4a', 'wav', 'ogg']
 
 def allowed_upload_file(filename: str) -> bool:
-    return '.' in filename and filename.split('.')[-1].lower() in (ALLOWED_IMAGE_EXTENSIONS or ALLOWED_AUDIO_EXTENSIONS)
+    print("file extension lower:", filename.split('.')[-1].lower())
+    print("in or: ", "ogg" in (ALLOWED_IMAGE_EXTENSIONS or ALLOWED_AUDIO_EXTENSIONS))
+    return '.' in filename and filename.split('.')[-1].lower() in (ALLOWED_IMAGE_EXTENSIONS + ALLOWED_AUDIO_EXTENSIONS)
 
 def split_filename(filename: str) -> List[str]:
     return filename.split('.')
@@ -31,6 +40,7 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
     sections = {} # contains section object
 
     for file in files:
+        print(f"file {file.filename} upload allowed?: ", allowed_upload_file(file.filename))
         if file and allowed_upload_file(file.filename):
             filename = file.filename 
 
@@ -57,12 +67,13 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
                     current_guide.remove_sections()
 
-            new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_sequence + "." + file_extension
-
+            new_filename = ""
             if file_extension in ALLOWED_IMAGE_EXTENSIONS:
+                new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_sequence + "." + file_extension
                 filepath = os.path.join(IMAGE_FOLDER, new_filename)
 
             elif file_extension in ALLOWED_AUDIO_EXTENSIONS:
+                new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_extension
                 filepath = os.path.join(AUDIO_FOLDER, new_filename)
                 
             file.save(filepath)
@@ -75,28 +86,45 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
                 current_section = Section()
 
             if file_extension in ALLOWED_IMAGE_EXTENSIONS:
-                current_section.add_image(filename)
+                current_section.add_image(new_filename)
 
-            # add text when AI is ready
             if file_extension in ALLOWED_AUDIO_EXTENSIONS:
-                # send to AI
-                # ai_text = ...
-                # curren_section.set_text(ai_text)
-                pass
+                print("got a valid file exttension for audio conversion")
+                transcribed_text = transcribe_and_format_audio(new_filename)
+                current_section.set_text(transcribed_text)
+                print("transcribed text: ", current_section.get_text())
             
             sections[step_sequence] = current_section
                 
         else:
             raise TypeError("Invalid file type for uploaded file: ", file.filename)
 
-    if not has_audio:
-        # Iterate through Sections and for each --> send images to AI method
-        # Get text back for each Section
-        pass
-
     sections = dict(sorted(sections.items()))
     for section in sections.values():
         current_guide.add_section(section)
 
+    if not has_audio:
+        # Iterate through Sections --> send all images to AI method
+        # Get text back for each Section
+        all_images = []
+        for section in sections.values():
+            all_images.append(section.get_img_ids())
+        guide_texts = gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
+        index = 0
+        for section in sections.values():
+            section.set_text(guide_texts[index])
+            index += 1
+
 
     return {"frontend_return": f'{{"guide_id":"{frontend_guide_uuid}", "comment":"thank you for your service!"}}', "app_return": current_guide}
+
+
+def guide_list(guides):
+    # creates the json response for the frontend to list all guides
+    guide_uuids_list = []
+    guide_titles_list = []
+    for guide in guides:
+        guide_uuids_list.append(guide.get_uuid())
+        guide_titles_list.append(guide.get_title())
+    
+    return f'{{"guides":{guide_uuids_list}, "titles":{guide_titles_list}}}'
