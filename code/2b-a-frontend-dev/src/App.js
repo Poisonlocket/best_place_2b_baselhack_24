@@ -13,7 +13,6 @@ import Test from "./pages/Test";
 import OurFooter from './components/Footerbar';
 import GuideOverview from './pages/GuideOverview';
 
-
 function App() {
   return (
     <Router>
@@ -21,11 +20,10 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/overview" element={<GuideOverview />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/view" element={<View />} />
+        <Route path="/edit/:id?" element={<Edit />} /> {/* Optional ID parameter */}
+        <Route path="/view/:id" element={<View />} /> {/* Required ID parameter */}
         <Route path="/test" element={<Test />} />
       </Routes>
-      <OurFooter />
     </Router>
   );
 }

@@ -9,7 +9,7 @@ import testAudio from "../assets/test_data_pen.ogg";
 import { Guide, Section, SectionImage, SectionRecording } from "../components/model"
 
 export const generateTestGuide = () => {
-    const guide = new Guide("Pen Assmebly", "1234-5678");
+    const guide = new Guide("Pen Assmebly", "test_1");
     guide.description = "A comperhansive guide to put the lid onto a memox.pen.";
     guide.startImage = testImage4;
 
