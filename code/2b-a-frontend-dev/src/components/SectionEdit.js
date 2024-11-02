@@ -169,7 +169,7 @@ const SectionEdit = ({ section, onSectionUpdate, onClose }) => {
                         value={instructionText}
                         onChange={handleInstructionChange}
                         className="w-full p-2 border rounded-md"
-                        rows="2"
+                        rows="25"
                     ></textarea>
                 </div>
             </div>

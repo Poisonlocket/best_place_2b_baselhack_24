@@ -15,8 +15,6 @@ import operator
 
 import base64
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from ai.ai_functions import *
 
 # id and name of the hardcoded guide
