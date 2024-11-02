@@ -1,3 +1,9 @@
 .vscode/
 **.pyc
 code/backend/uploads/*
+.mypy_cache
+
+# temp output ai
+*.mp4
+*.wav
+*.txt
