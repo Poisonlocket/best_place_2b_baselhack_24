@@ -42,14 +42,6 @@ def upload_all(guides: list[Guide]) -> str:
                 step_sequence = name_list[1]
                 file_extension = name_list[2]
 
-            if file_extension in ALLOWED_IMAGE_EXTENSIONS:
-                filepath = os.path.join(IMAGE_FOLDER, filename)
-
-            elif file_extension in ALLOWED_AUDIO_EXTENSIONS:
-                filepath = os.path.join(AUDIO_FOLDER, filename)
-
-            file.save(filepath)
-
             if guide_exists == False:
                 guide_exists = True 
                 if guide_uuid == "no_id":
@@ -59,6 +51,16 @@ def upload_all(guides: list[Guide]) -> str:
                     frontend_guide_uuid = guide_uuid
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
                     current_guide.remove_sections()
+
+            new_filename = str(frontend_guide_uuid) + "." + step_sequence + "." + file_sequence + "." + file_extension
+
+            if file_extension in ALLOWED_IMAGE_EXTENSIONS:
+                filepath = os.path.join(IMAGE_FOLDER, new_filename)
+
+            elif file_extension in ALLOWED_AUDIO_EXTENSIONS:
+                filepath = os.path.join(AUDIO_FOLDER, new_filename)
+                
+            file.save(filepath)
 
                 
             # frontend sends the whole guide            
