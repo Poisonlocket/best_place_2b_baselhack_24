@@ -37,11 +37,6 @@ def extract_steps_hardcode(text):
                 steps.append(sentence)
     return steps
 
-def format_section(steps):
-    for step in steps:
-        manual += f"{step}\n\n"
-    return manual
-
 def extract_steps_openai(prompt_text, nb_steps):
     prompt_beginning = f"Please summarize this text from a manual into a series of exactly {nb_steps} steps. Include step numbers in the response (e.g. step 1, step 2, etc), starting with 1. Do not include any line breaks."
     total_prompt = prompt_beginning + prompt_text
@@ -71,9 +66,8 @@ def transcribe_and_format_audio(audio_file, nb_steps):
 
     # Extract steps from the transcription
     steps = extract_steps_openai(translated_text, nb_steps) # Choose which method to use (hardcode or openai)
-    formatted_text = format_section(steps)
 
-    return formatted_text
+    return steps
 
 def gen_texts_from_images(images, possible_outcomes):
     # We get a series of images, where each is labeled guide_uuid.step_nb.img_seq.extension, e.g. no_id.0.0.jpg
