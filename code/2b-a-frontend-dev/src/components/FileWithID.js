@@ -6,7 +6,7 @@ class FileWithID {
       this.isImage = isImage;
     }
   	displayInfo(){
-    	return "" + this.step_number + "." + this.image_number + (this.isImage ? ".jpg" : ".ogg");
+    	return "" + this.step_number + "." + this.file_number + (this.isImage ? ".jpg" : ".ogg");
     }
 }
 
