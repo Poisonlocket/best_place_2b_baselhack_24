@@ -16,10 +16,18 @@ const CameraCapture = ({ onCapture }) => {
   };
 
   const startCamera = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    setStream(stream);
-    videoRef.current.srcObject = stream;
-    setIsCameraActive(true);
+    const constraints = {
+      video: { facingMode: "environment" } // Prefer the front camera
+    };
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      setStream(stream);
+      videoRef.current.srcObject = stream;
+      setIsCameraActive(true);
+    } catch (error) {
+      console.error("Error accessing the front camera:", error);
+    }
   };
 
   const stopCamera = () => {
@@ -53,7 +61,7 @@ const CameraCapture = ({ onCapture }) => {
   return (
     <div className="w-full flex flex-col items-center bg-gray-200 rounded-lg p-2">
       {/* Camera Feed */}
-      <div  className="w-full flex justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <video ref={videoRef} autoPlay style={{ width: '100%', height: 'auto' }} className="rounded-md" />
         <canvas ref={canvasRef} className="hidden" />
       </div>

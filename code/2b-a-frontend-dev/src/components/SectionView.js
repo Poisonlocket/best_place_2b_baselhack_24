@@ -4,47 +4,57 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 const SectionView = ({ section, onEdit, onDelete }) => {
     return (
-        <div className="w-full border p-4 rounded-lg bg-gray-50 mb-4 relative">
-            {/* Controls at the Top Right */}
-            <div className="absolute top-2 right-2 flex space-x-2">
+        <div className="w-full border p-2 rounded-lg bg-gray-50 mb-3 relative">
+            {/* Top Right Controls */}
+            <div className="absolute top-2 right-2 flex space-x-1">
                 <button
                     onClick={onEdit}
-                    className="bg-blue-500 text-white px-2 py-1 rounded"
+                    className="text-blue-500 hover:text-blue-600"
+                    aria-label="Edit"
                 >
-                    <FaEdit className="inline mr-1" /> Edit
+                    <FaEdit size={18} />
                 </button>
                 <button
                     onClick={onDelete}
-                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    className="text-red-500 hover:text-red-600"
+                    aria-label="Delete"
                 >
-                    <FaTrash className="inline mr-1" /> Delete
+                    <FaTrash size={18} />
                 </button>
             </div>
 
-            <h2 className="text-lg font-bold mb-4">Step {section.number}</h2>
+            <h2 className="text-lg font-bold mb-2">Step {section.number}</h2>
 
-            {/* Gallery for Images */}
-            <div className="w-full flex space-x-4">
-                <div className="flex flex-wrap gap-4 w-1/2">
+            {/* Responsive Layout for Images and Audio/Instructions */}
+            <div className="flex flex-col md:flex-row md:space-x-3">
+                {/* Gallery for Images */}
+                <div className="flex flex-wrap gap-2 md:w-1/2">
                     {section.images.map((image) => (
-                        <div key={image.image_number} className="relative bg-blue-400 p-2 rounded-md shadow-md w-40 h-40">
-                            <img src={image.fileContent} alt={image.image_name} className="w-full h-full object-cover rounded-md" />
-                            <div className="absolute top-0 left-0 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded-tr-md rounded-bl-md">
+                        <div
+                            key={image.image_number}
+                            className="relative bg-blue-400 p-1 rounded-md shadow-md w-28 h-28 md:w-36 md:h-36"
+                        >
+                            <img
+                                src={image.fileContent}
+                                alt={image.image_name}
+                                className="w-full h-full object-cover rounded-md"
+                            />
+                            <div className="absolute top-0 left-0 bg-black bg-opacity-50 text-white px-1 py-0.5 text-xs rounded-tr-md rounded-bl-md">
                                 #{image.image_number}
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Audio Recording and Instructions */}
-                <div className="w-1/2 space-y-4">
+                {/* Audio and Instructions */}
+                <div className="mt-3 md:mt-0 md:w-1/2 space-y-2">
                     {section.recording && (
-                        <audio controls className="w-full mt-2">
+                        <audio controls className="w-full">
                             <source src={section.recording.fileContent} type="audio/wav" />
                             Your browser does not support the audio element.
                         </audio>
                     )}
-                    <p className="text-gray-700 bg-gray-100 p-3 rounded-md">
+                    <p className="text-gray-700 bg-gray-100 p-2 rounded-md text-sm">
                         {section.instructionText || "No instructions available."}
                     </p>
                 </div>
