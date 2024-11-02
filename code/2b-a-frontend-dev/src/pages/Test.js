@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import SingleFileUploader from '../components/SingleFileUploader';
 import SendFilesButton from '../components/SendFilesButton';
 import FileWithID from '../components/FileWithID';
+import AllGuidesV2 from '../components/AllGuidesV2';
 
 function Test() {
   const [files, setFiles] = useState([null, null, null])
@@ -17,6 +18,7 @@ function Test() {
         <SingleFileUploader setFile={(e => setFiles(prevFiles => [prevFiles[0], prevFiles[1], new FileWithID(e, 0, 2, false)]))} />
         <SendFilesButton filesWithID={files}/>
       </div>
+      <AllGuidesV2 />
     </div>
   );
 }
