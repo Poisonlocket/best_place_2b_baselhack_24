@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 import base64
+import requests
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -13,13 +14,18 @@ client = OpenAI(
 )
 
 def encode_image(image_path):
-  with open(image_path, "rb") as image_file:
-    return base64.b64encode(image_file.read()).decode('utf-8')
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+  
+def encode_audio(audio_path):
+    with open(audio_path, "rb") as audio_file:
+        return base64.b64encode(audio_file.read()).decode('utf-8')
 
 # A simple function to split the transcription into sentences
 def split_into_sentences(text):
     sentences = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s', text)
     return sentences
+
 
 # Function to identify and structure steps
 def extract_steps_hardcode(text):
@@ -37,6 +43,7 @@ def extract_steps_hardcode(text):
                 steps.append(sentence)
     return steps
 
+
 def extract_steps_openai(prompt_text, nb_steps):
     prompt_beginning = f"Please summarize this text from a manual into a series of exactly {nb_steps} steps. Include step numbers in the response (e.g. step 1, step 2, etc), starting with 1. Do not include any line breaks."
     total_prompt = prompt_beginning + prompt_text
@@ -52,9 +59,10 @@ def extract_steps_openai(prompt_text, nb_steps):
     text_with_steps = response.choices[0].message.content
     return text_with_steps
 
+
 def transcribe_and_format_audio(audio_file, nb_steps):
     # Load the whisper model
-    model = whisper.load_model("base")  # You can choose "small", "medium", or "large" models based on your needs
+    model = whisper.load_model("tiny")  # You can choose "small", "medium", or "large" models based on your needs
 
     # Transcribe the audio using Whisper
     try:
@@ -66,8 +74,38 @@ def transcribe_and_format_audio(audio_file, nb_steps):
 
     # Extract steps from the transcription
     steps = extract_steps_openai(translated_text, nb_steps) # Choose which method to use (hardcode or openai)
-
     return steps
+
+
+def transcribe_and_format_audio_openai(audio_file, format, nb_steps):
+    base64_audio = encode_audio(audio_file)
+    response = client.chat.completions.create(
+        model="gpt-4o-audio-preview",
+        modalities=["text", "audio"],
+        audio={"voice": "alloy", "format": format},
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    { 
+                        "type": "text",
+                        "text": "Please transcribe this recording."
+                    },
+                    {
+                        "type": "input_audio",
+                        "input_audio": {
+                            "data": base64_audio,
+                            "format": format
+                        }
+                    }
+                ]
+            },
+        ]
+    )
+    translated_text = response.choices[0].message
+    steps = extract_steps_openai(translated_text, nb_steps) # Choose which method to use (hardcode or openai)
+    return steps
+
 
 def gen_texts_from_images(images, possible_outcomes):
     # We get a series of images, where each is labeled guide_uuid.step_nb.img_seq.extension, e.g. no_id.0.0.jpg
