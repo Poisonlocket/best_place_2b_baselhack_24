@@ -13,7 +13,7 @@ function Test() {
       const fileBlob = await response.blob();
 
       let data = new FormData();
-      data.append('file', fileBlob, "hello darkness my old friend");
+      data.append('images', fileBlob, "hello darkness my old friend.jpg");
       return data
     } catch(err) {
       console.error(err)
@@ -22,9 +22,10 @@ function Test() {
 
   async function storeImage() {
     const data = await getData()
-    axios.post("https://localhost:5000", data, {
+    axios.post("http://localhost:5000/upload/images", data, {
       headers: {
         'accept': 'application/json',
+        'Content-Encoding': 'gzip',
         'Accept-Language': 'en-US,en;q=0.8',
         'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
       }
@@ -39,6 +40,7 @@ function Test() {
 
   return (
     <div>
+      <h1>Stores test file to backend. Need to start backend first: </h1>
       <Button onClick={storeImage} >Save</Button>
     </div>
   );
