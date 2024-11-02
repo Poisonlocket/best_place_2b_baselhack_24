@@ -18,12 +18,17 @@ const HomeComponent = () => {
                 <h2 className="text-xl text-gray-600 px-1.5">Simple creation. Simple Use</h2>
                 <Link to="/view">
                     <button type="button" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                        Get Start
+                        Get Starter
                     </button>
                 </Link>
                 <Link to="/edit">
                     <button type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
                         New Guide
+                    </button>
+                </Link>
+                <Link to="/view">
+                    <button type="button" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                        All Guides
                     </button>
                 </Link>
             </div>
