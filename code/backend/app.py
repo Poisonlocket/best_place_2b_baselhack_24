@@ -83,4 +83,25 @@ def add_guide_title():
     return Response("Guide title added successfully", 201)
     
 
+@app.get("/get_images/<str:guide_id>")
+def get_images(guide_id:str):
+    image_paths = []
+    file_objects = []
+    for guide in guides:
+        if getattr(guide, guide.get_uuid(), None) == guide_id:
+            sel_guide = guide
+    for section in sel_guide.sections:
+        data=section.get_img_ids()
+        image_paths.append(data)
+
+    for filename in image_paths:
+        file_path = os.path.join("./images", filename)
+        try:
+            file = open(file_path, 'r')  # Opens the file in read mode; adjust mode as needed
+            file_objects.append(file)
+        except FileNotFoundError:
+            print(f"File '{filename}' not found in directory images'")
+
+    return file_objects
+
 app.run()
