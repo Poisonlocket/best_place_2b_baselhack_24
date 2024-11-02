@@ -1,7 +1,7 @@
 from flask import Flask, Response, Request, request
 from flask_cors import CORS, cross_origin
 from guide import Guide
-from helpers import upload_images, upload_audio
+from helpers import upload_all
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -66,15 +66,10 @@ def add_guide():
     print(guides)
     return Response("Guide added successfully", 201)
 
-@app.post("/upload/images")
+@app.post("/upload")
 @cross_origin()
-def upload_file_images():
-    return upload_images()
-
-@app.post("/upload/audio")
-@cross_origin()
-def upload_file_audio():
-    return upload_audio()
+def upload():
+    return upload_all()
     
 
 app.run()

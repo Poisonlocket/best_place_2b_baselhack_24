@@ -1,5 +1,5 @@
 class Section:
-    def __init__(self, title):
+    def __init__(self, title: str):
         self.title = title
         self.img_ids = []
         self.text = ""
