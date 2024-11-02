@@ -216,13 +216,17 @@ def guide_image_data(guides, guide_id):
     image_paths = []
     file_objects = []
 
+    image_paths = []
+    section_array = []
+    section_number = 0
     # for hardcoded guides
     if guide_id in HARDCODED_GUIDES:
         hardcoded_path = "../../assets"
         image_base = os.path.join(hardcoded_path, guide_id)
         onlyfiles = [f for f in listdir(image_base) if isfile(join(image_base, f))]
-        image_paths = []
-        for file in onlyfiles:
+        sortedfiles = (sorted(onlyfiles))
+        
+        for file in sortedfiles:
             name_list = split_filename(file)
             if len(name_list) == 4:
                 guide_uuid = name_list[0]
@@ -233,9 +237,16 @@ def guide_image_data(guides, guide_id):
                 guide_uuid = name_list[0]
                 step_sequence = name_list[1]
                 file_extension = name_list[2]
-            if file_extension in ALLOWED_IMAGE_EXTENSIONS:
-                image_paths.append(file)
 
+            if int(step_sequence) > section_number:
+                image_paths.append(section_array)
+                section_array = []
+                section_number = int(step_sequence)
+            
+            if file_extension in ALLOWED_IMAGE_EXTENSIONS:
+                section_array.append(file)
+
+        image_paths.append(section_array)
     # other guides
     else: 
         current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_id)]
@@ -243,16 +254,19 @@ def guide_image_data(guides, guide_id):
             ids = section.get_img_ids()
             image_paths.append(ids)
 
-        image_paths = functools.reduce(operator.iconcat, image_paths, [])
+        # image_paths = functools.reduce(operator.iconcat, image_paths, [])
         print("image_paths: ", image_paths)
         image_base = "./uploads/images"
 
     # for all image paths 
-    for filename in image_paths:
-        file_path = os.path.join(image_base, filename)
+    for section_array in image_paths:
+        section_image_array = []
+        for filename in section_array:
+            file_path = os.path.join(image_base, filename)
         
-        with open(file_path, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read())
-            file_objects.append(encoded_string)
+            with open(file_path, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read())
+                section_image_array.append(encoded_string)
+        file_objects.append(section_image_array)
 
     return f'{{"images":{file_objects} }}'
