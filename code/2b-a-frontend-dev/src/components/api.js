@@ -86,7 +86,7 @@ function responseDataToGuide(responseData, responseImages) {
     for(let i = 0; i < responseData.sections.length; i++) {
         let instructionText = responseData.sections[i].text;
         let images = [];
-        for(let j = 0; j < responseImage[i].length; j++) {
+        for(let j = 0; j < responseImages[i].length; j++) {
             images.append(responseImages[i][j]);
         }
         let newSection = new Section(i, name, images, null, instructionText);
@@ -99,8 +99,24 @@ function responseDataToGuide(responseData, responseImages) {
 export const getGuide = async (id) => {
     let responseData = callGuide(id);
     let responseImages = callGuideImages(id);
-    if(responseData && responseImages) {
+    if(responseData && responseData.sections && responseImages) {
         return responseDataToGuide(responseData, responseImages);
     }
     return generateTestGuide();
+};
+
+
+// Updated getGuides to set the last image in the last section as the startImage
+export const getGuides = async () => {
+    const guides = [generateTestGuide(), generateTestGuide(), generateTestGuide()];
+    
+    // Set each guide's startImage to the last image in the last section
+    guides.forEach((guide) => {
+        const lastSection = guide.sections[guide.sections.length - 1];
+        if (lastSection && lastSection.images.length > 0) {
+            guide.startImage = lastSection.images[lastSection.images.length - 1].fileContent;
+        }
+    });
+
+    return guides;
 };
