@@ -1,12 +1,7 @@
 class Section:
-    def __init__(self, title: str):
-        self.title = title
+    def __init__(self):
         self.img_ids = []
         self.text = ""
-
-    @property
-    def get_title(self):
-        return self.title
 
     @property
     def get_img_ids(self):
