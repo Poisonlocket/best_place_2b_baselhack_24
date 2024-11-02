@@ -9,7 +9,9 @@ function SendFilesButton({ filesWithID }) {
   async function getData() {
     let data = new FormData();
     for(let file of filesWithID) {
-      data.append('awesome_files', file.fileContent, guideID + "." + file.displayInfo());
+      if(file) {
+        data.append('awesome_files', file.fileContent, guideID + "." + file.displayInfo());
+      }
     }
     return data;
   }
