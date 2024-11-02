@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 # Load environment variables from the .env file
 load_dotenv()
-#openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # A simple function to split the transcription into sentences
 def split_into_sentences(text):
