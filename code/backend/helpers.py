@@ -32,12 +32,12 @@ def upload_all(guides: list[Guide]) -> str:
 
             name_list = split_filename(filename)
 
-            if len(name_list == 4):
+            if len(name_list) == 4:
                 guide_uuid = name_list[0]
                 step_sequence = name_list[1]
                 file_sequence = name_list[2]
                 file_extension = name_list[3]
-            elif len(name_list == 3):
+            elif len(name_list) == 3:
                 guide_uuid = name_list[0]
                 step_sequence = name_list[1]
                 file_extension = name_list[2]
@@ -54,7 +54,7 @@ def upload_all(guides: list[Guide]) -> str:
                 guide_exists = True 
                 if guide_uuid == "no_id":
                     current_guide = Guide()
-                    frontend_guide_uuid = new_guide.get_uuid()
+                    frontend_guide_uuid = current_guide.get_uuid()
                 else:
                     frontend_guide_uuid = guide_uuid
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
@@ -62,7 +62,7 @@ def upload_all(guides: list[Guide]) -> str:
 
                 
             # frontend sends the whole guide            
-            if sections[step_sequence]:
+            if step_sequence in sections:
                 current_section = sections[step_sequence]
             else:
                 current_section = Section()
