@@ -44,7 +44,6 @@ def teapot() -> Response:
 """
 
     return Response(art, mimetype="text/plain")
-
 # Guide Endpoints
 @app.get("/guides")
 def get_guides():
@@ -57,7 +56,7 @@ def get_specific_guide(guide_id:int):
 @app.post("/guides")
 def add_guide():
     data = request.get_json()
-    new_guide = Guide(title=data["title"], sections=data["sections"])
+    new_guide = Guide(title=data["title"], sections=data["sections"]) 
     guides.append(new_guide)
     print(guides)
     return Response("Guide added successfully", 201)
