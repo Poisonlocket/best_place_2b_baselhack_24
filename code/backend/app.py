@@ -52,11 +52,11 @@ def teapot() -> Response:
 # Guide Endpoints
 @app.get("/guides")
 def get_guides():
-    return guides
+    return guide_list(guides)
 
-@app.get("/guides/<int:guide_id>")
-def get_specific_guide(guide_id:int):
-    return guides[guide_id]
+@app.get("/guides/<guide_id>")
+def get_specific_guide(guide_id):
+    return unique_guide(guides, guide_id)
 
 @app.post("/guides")
 @cross_origin()
@@ -82,5 +82,9 @@ def add_guide_title():
     current_guide.set_title(data["title"])
     return Response("Guide title added successfully", 201)
     
+
+@app.get("/get_images/<guide_id>")
+def get_images(guide_id):
+    return guide_image_data(guides, guide_id)   
 
 app.run()

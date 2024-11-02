@@ -38,7 +38,7 @@ function guideToData(guides) {
 }
 
 async function storeImages(data) {
-    axios.post("https://localhost:5000/upload", data, {
+    axios.post("http://localhost:5000/upload", data, {
         headers: {
             'accept': 'application/json',
             'Content-Encoding': 'gzip',

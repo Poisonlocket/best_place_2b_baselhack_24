@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import SingleFileUploader from '../components/SingleFileUploader';
 import SendFilesButton from '../components/SendFilesButton';
 import FileWithID from '../components/FileWithID';
+import AllGuidesV2 from '../components/AllGuidesV2';
 
 function Test() {
   const [files, setFiles] = useState([null, null, null])
 
   return (
-    <div class="flex-row h-96 space-y-40 outline-20">
+    <div class="flex-row space-y-40 outline-20">
       <div>
         <h1>Stores test file to backend. Need to start backend first: </h1>
       </div>
@@ -17,6 +18,8 @@ function Test() {
         <SingleFileUploader setFile={(e => setFiles(prevFiles => [prevFiles[0], prevFiles[1], new FileWithID(e, 0, 2, false)]))} />
         <SendFilesButton filesWithID={files}/>
       </div>
+      <AllGuidesV2 />
+      <div className='h-40'></div>
     </div>
   );
 }
