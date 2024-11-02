@@ -85,8 +85,6 @@ def add_guide_title():
 
 @app.get("/get_images/<guide_id>")
 def get_images(guide_id):
-    file_objects = guide_image_data(guides, guide_id)
-    
-    return file_objects
+    return guide_image_data(guides, guide_id)   
 
 app.run()
