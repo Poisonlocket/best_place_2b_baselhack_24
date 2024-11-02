@@ -150,7 +150,6 @@ def guide_list(guides):
 
 def unique_guide(guides, guide_uuid):
     # creates the json response for the frontend for a single uuid
-    current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_uuid)]
     section_list = []
 
     # hardcoded guides
@@ -201,6 +200,8 @@ def unique_guide(guides, guide_uuid):
             for section in sections.values():
                 current_guide.add_section(section)
     # finished creation of the guide
+    else:
+        current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_uuid)]
   
     # read the guide as json format
     for section in current_guide.sections:
@@ -215,16 +216,40 @@ def guide_image_data(guides, guide_id):
     image_paths = []
     file_objects = []
 
-    current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_id)]
-    for section in current_guide.sections:
-        ids = section.get_img_ids()
-        image_paths.append(ids)
+    # for hardcoded guides
+    if guide_id in HARDCODED_GUIDES:
+        hardcoded_path = "../../assets"
+        image_base = os.path.join(hardcoded_path, guide_id)
+        onlyfiles = [f for f in listdir(image_base) if isfile(join(image_base, f))]
+        image_paths = []
+        for file in onlyfiles:
+            name_list = split_filename(file)
+            if len(name_list) == 4:
+                guide_uuid = name_list[0]
+                step_sequence = name_list[1]
+                file_sequence = name_list[2]
+                file_extension = name_list[3]
+            elif len(name_list) == 3:
+                guide_uuid = name_list[0]
+                step_sequence = name_list[1]
+                file_extension = name_list[2]
+            if file_extension in ALLOWED_IMAGE_EXTENSIONS:
+                image_paths.append(file)
 
-    image_paths = functools.reduce(operator.iconcat, image_paths, [])
-    print("image_paths: ", image_paths)
+    # other guides
+    else: 
+        current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_id)]
+        for section in current_guide.sections:
+            ids = section.get_img_ids()
+            image_paths.append(ids)
 
+        image_paths = functools.reduce(operator.iconcat, image_paths, [])
+        print("image_paths: ", image_paths)
+        image_base = "./uploads/images"
+
+    # for all image paths 
     for filename in image_paths:
-        file_path = os.path.join("./uploads/images", filename)
+        file_path = os.path.join(image_base, filename)
         
         with open(file_path, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())

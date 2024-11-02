@@ -114,10 +114,10 @@ def gen_texts_from_images(images, possible_outcomes):
     # There will be one text per section / step_nb
     texts = []
     
+    current_text = ""
     previous_seq = int(images[0].split('.')[1])
 
     for image in images:
-        current_text = ""
         step_nb = int(image.split('.')[1])
         img_seq = int(image.split('.')[2])
 
@@ -141,8 +141,8 @@ def gen_texts_from_images(images, possible_outcomes):
                 prompt = f"""From these two images, tell me what needs to be done to go from image1 to image2.
                             Format it like an instruction manual (don't over do it). Categorize the transition from one of the following output categories: {possible_outcomes}.
                             From that categorization, continue the description. Be brief in your response."""
-                base64_image1 = encode_image("../backend/uploads/images/"+image)
-                base64_image2 = encode_image("../backend/uploads/images/"+previous_image)
+                base64_image1 = encode_image("../backend/uploads/images/"+previous_image)
+                base64_image2 = encode_image("../backend/uploads/images/"+image)
                 response = client.chat.completions.create(
                     model="gpt-4-turbo",
                     messages=[
