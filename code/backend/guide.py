@@ -25,14 +25,8 @@ class Guide:
         else:
             raise TypeError("Only Section instances can be added to Guide sections")
         
-    def remove_section(self, section):
-        if isinstance(section, Section):
-            try:
-                self.sections.remove(section)
-            except:
-                raise Exception("Section not found in this guide!")
-        else:
-            raise TypeError("Only Section instances can be removed from Guide sections")
+    def remove_sections(self):
+        self.sections = []
 
     def __str__(self):
         sections_str = "\n\n".join(section.get_title for section in self.sections)
