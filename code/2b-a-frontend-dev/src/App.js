@@ -16,17 +16,19 @@ import GuideOverview from './pages/GuideOverview';
 
 function App() {
   return (
-    <Router>
+    <div>
       <Navbar />
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/overview" element={<GuideOverview />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/view" element={<View />} />
-        <Route path="/test" element={<Test />} />
-      </Routes>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/overview" element={<GuideOverview />} />
+          <Route path="/edit" element={<Edit />} />
+          <Route path="/view" element={<View />} />
+          <Route path="/test" element={<Test />} />
+        </Routes>
+      </Router>
       <OurFooter />
-    </Router>
+    </div>
   );
 }
 

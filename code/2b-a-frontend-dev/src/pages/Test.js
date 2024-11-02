@@ -8,7 +8,7 @@ function Test() {
   const [files, setFiles] = useState([null, null, null])
 
   return (
-    <div class="flex-row h-96 space-y-40 outline-20">
+    <div class="flex-row space-y-40 outline-20">
       <div>
         <h1>Stores test file to backend. Need to start backend first: </h1>
       </div>
@@ -19,6 +19,7 @@ function Test() {
         <SendFilesButton filesWithID={files}/>
       </div>
       <AllGuidesV2 />
+      <div className='h-40'></div>
     </div>
   );
 }
