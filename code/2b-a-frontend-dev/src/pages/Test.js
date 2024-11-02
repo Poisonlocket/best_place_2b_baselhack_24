@@ -7,11 +7,11 @@ function Test() {
   const [files, setFiles] = useState([null, null, null])
 
   return (
-    <div class="h-96 space-y-40 outline-20">
+    <div class="flex-row h-96 space-y-40 outline-20">
       <div>
         <h1>Stores test file to backend. Need to start backend first: </h1>
       </div>
-      <div class="flex justify-between space-x-4 space-y-4">
+      <div>
         <SingleFileUploader setFile={(e => setFiles(prevFiles => [new FileWithID(e, 0, 0), prevFiles[1], prevFiles[2]]))} />
         <SingleFileUploader setFile={(e => setFiles(prevFiles => [prevFiles[0], new FileWithID(e, 0, 1), prevFiles[2]]))} />
         <SingleFileUploader setFile={(e => setFiles(prevFiles => [prevFiles[0], prevFiles[1], new FileWithID(e, 0, 2)]))} />
