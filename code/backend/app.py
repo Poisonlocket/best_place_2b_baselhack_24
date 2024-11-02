@@ -52,7 +52,7 @@ def teapot() -> Response:
 # Guide Endpoints
 @app.get("/guides")
 def get_guides():
-    return guides
+    return guide_list(guides)
 
 @app.get("/guides/<int:guide_id>")
 def get_specific_guide(guide_id:int):
