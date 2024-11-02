@@ -3,7 +3,6 @@ from typing import Dict
 
 from flask import request, redirect
 
-from code.backend.guide import Guide
 from guide import Guide
 from section import Section
 
