@@ -119,4 +119,4 @@ def guide_list(guides):
         guide_uuids_list.append(guide.get_uuid())
         guide_titles_list.append(guide.get_title())
     
-    return f'{{"guides":[{guide_uuids_list}], "titles":[{guide_titles_list}]}}'
+    return f'{{"guides":{guide_uuids_list}, "titles":{guide_titles_list}}}'
