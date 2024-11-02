@@ -32,6 +32,8 @@ install openai-whisper
 fyi this downloads a few packages of ca. 2 Gb
 ```sh
 pip install openai-whisper
+pip install openai
+pip install python-dotenv
 ```
 
 ### Backend

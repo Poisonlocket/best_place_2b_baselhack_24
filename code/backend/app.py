@@ -54,9 +54,9 @@ def teapot() -> Response:
 def get_guides():
     return guide_list(guides)
 
-@app.get("/guides/<int:guide_id>")
-def get_specific_guide(guide_id:int):
-    return guides[guide_id]
+@app.get("/guides/<guide_id>")
+def get_specific_guide(guide_id):
+    return unique_guide(guides, guide_id)
 
 @app.post("/guides")
 @cross_origin()
@@ -83,25 +83,10 @@ def add_guide_title():
     return Response("Guide title added successfully", 201)
     
 
-@app.get("/get_images/<str:guide_id>")
-def get_images(guide_id:str):
-    image_paths = []
-    file_objects = []
-    for guide in guides:
-        if getattr(guide, guide.get_uuid(), None) == guide_id:
-            sel_guide = guide
-    for section in sel_guide.sections:
-        data=section.get_img_ids()
-        image_paths.append(data)
-
-    for filename in image_paths:
-        file_path = os.path.join("./images", filename)
-        try:
-            file = open(file_path, 'r')  # Opens the file in read mode; adjust mode as needed
-            file_objects.append(file)
-        except FileNotFoundError:
-            print(f"File '{filename}' not found in directory images'")
-
+@app.get("/get_images/<guide_id>")
+def get_images(guide_id):
+    file_objects = guide_image_data(guides, guide_id)
+    
     return file_objects
 
 app.run()
