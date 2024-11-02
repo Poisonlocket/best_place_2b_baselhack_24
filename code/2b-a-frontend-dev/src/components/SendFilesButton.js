@@ -3,24 +3,29 @@ import { Button } from "flowbite-react"
 import axios from 'axios';
 import FormData from 'form-data';
 import imageFile from '../assets/test1.jpg';
-import SingleFileUploader from '../components/SingleFileUploader';
 
-
-function Test() {
-  async function getData() {
-    try {
-      const response = await fetch(imageFile);
-      const fileBlob = await response.blob();
-
-      let data = new FormData();
-      data.append('awesome_files', fileBlob, "hello darkness my old friend.jpg");
-      return data
-    } catch(err) {
-      console.error(err)
+class FileWithID{
+	constructor(fileContent, id="no_id", step_number, image_number){
+    	this.fileContent = fileContent;
+      this.id = id;
+      this.step_number = step_number;
+      this.image_number = image_number;
     }
+  	displayInfo(){
+    	return "" + this.id + "." + this.step_number + "." + this.image_number + ".jpg";
+    }
+}
+
+function SendFilesButton(files) {
+  async function getData() {
+    let data = new FormData();
+    for(let file of files) {
+      data.append('awesome_files', file.fileContent, file.displayInfo());
+    }
+    return data;
   }
 
-  async function storeImage() {
+  async function storeImages() {
     const data = await getData()
     axios.post("http://localhost:5000/upload", data, {
       headers: {
@@ -39,12 +44,11 @@ function Test() {
   }
 
   return (
+    id &&
     <div>
-      <h1>Stores test file to backend. Need to start backend first: </h1>
-      <SingleFileUploader />
-      <Button onClick={storeImage} >Save</Button>
+      <Button onClick={storeImages} >Save</Button>
     </div>
   );
 }
 
-export default Test;
+export default SendFilesButton;
