@@ -134,10 +134,11 @@ export const getGuide = async (id) => {
 
 // Updated getGuides to set the last image in the last section as the startImage
 export const getGuides = async () => {
-    const response = await callAllGuides();
+    let response = await callAllGuides();
     console.log("getGuides response data " + response);
     if (response) {
-        return await response.guides.map(e => getGuide(e));
+        console.log(response.data)
+        return await response.data.guides.map(e => getGuide(e));
     } else {
         console.log("getGuides failed and we return 3 generated test guides.")
         const guides = [generateTestGuide(), generateTestGuide(), generateTestGuide()];
@@ -155,14 +156,14 @@ export const getGuides = async () => {
 };
 
 async function callAllGuides() {
-    axios({
+    let response = await axios({
         method: 'get',
         url: "" + process.env.REACT_APP_API_URL + '/guides',
       }).then(function (response) {
-        console.log("callAllGuides response:" + response);
-        console.log(response);
+        console.log("callAllGuides response: " + response);
         return response;
       }).catch((error) => {
         return null;
     });
+    return response;
 }
