@@ -268,3 +268,34 @@ def guide_image_data(guides, guide_id):
         file_objects.append(section_image_array)
 
     return f'{{"images":{file_objects} }}'
+
+def guide_image_last(guides, guide_id):
+    last_file = ""
+    image_base = ""
+
+    if guide_id in HARDCODED_GUIDES:
+        hardcoded_path = "../../assets"
+        image_base = os.path.join(hardcoded_path, guide_id)
+        onlyfiles = [f for f in listdir(image_base) if isfile(join(image_base, f))]
+        sortedfiles = (sorted(onlyfiles))
+
+        
+        for file in sortedfiles:
+            name_list = split_filename(file)
+            if len(name_list) == 4:
+                last_file = file
+    
+    else: 
+        current_guide = guides[find_guide_index(guides=guides, guide_uuid=guide_id)]
+        image_base = "./uploads/images"
+        img_ids = current_guide.sections.get_img_ids
+        sorted_imgs = sorted(img_ids)
+        last_file = sorted_imgs[-1]
+
+    # upload the last image
+    file_path = os.path.join(image_base, last_file)
+    encoded_string = ""
+    with open(file_path, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
+
+    return f'{{"images":{encoded_string} }}'
