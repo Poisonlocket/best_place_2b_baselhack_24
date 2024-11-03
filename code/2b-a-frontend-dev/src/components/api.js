@@ -12,7 +12,7 @@ export const saveAndProcessGuide = async (guide) => {
             console.log(key, value);
         }
         let new_uuid = await storeImages(data);
-        await storeTitle(guide.title, new_uuid);
+        // await storeTitle(guide.title, new_uuid);
         // Mock response data
         // const response = { message: "Guide processed successfully", guide};
         // console.log("Fake API response:", response);
@@ -140,9 +140,13 @@ export const getGuides = async () => {
     let response = await callAllGuides();
     console.log("getGuides response data: " + response);
     if (response) {
-        //todo use for loop
         console.log(response.data.guides)
-        return await response.data.guides.map(e => getGuide(e));
+        let guides = [];
+        for (let i = 0; i < response.data.guides.length; i++) {
+            let newGuide = await getGuide(response.data.guides[i]);
+            guides.push(newGuide);
+        }
+        return guides;
     } else {
         console.log("getGuides failed and we return 3 generated test guides.")
         const guides = [generateTestGuide(), generateTestGuide(), generateTestGuide()];
