@@ -100,8 +100,23 @@ async function callGuideImages(id) {
         method: 'get',
         url: "" + process.env.REACT_APP_API_URL + '/get_images/' + id,
     }).then(function (response) {
-        console.log("images returned");
+        console.log("callGuideImages returned");
         return response.data.images;
+    }).catch((error) => {
+        console.log(error.message);
+        return null;
+    });
+}
+
+async function callGuideStartImage(id) {
+    axios({
+        method: 'get',
+        url: "" + process.env.REACT_APP_API_URL + '/get_images/' + id + '/last',
+    }).then(function (response) {
+        console.log("callGuideStartImage returned");
+        const image = JSON.parse(response.data)
+        console.log("callGuideStartImage image: ", image.image)
+        return image.image;
     }).catch((error) => {
         console.log(error.message);
         return null;
@@ -143,8 +158,11 @@ export const getGuides = async () => {
         console.log(response.data.guides)
         let guides = [];
         for (let i = 0; i < response.data.guides.length; i++) {
-            let newGuide = await getGuide(response.data.guides[i]);
-            guides.push(newGuide);
+            let g = new Guide(response.data.guides[i].title, response.data.guides[i].uuid)
+            g.text = response.data.guides[i].description
+            // get image?
+            g.startImage = await callGuideStartImage(g.uuid);
+            guides.push(g);
         }
         return guides;
     } else {

@@ -52,6 +52,13 @@ def teapot() -> Response:
 """
 
     return Response(art, mimetype="text/plain")
+
+# Static route to serve images and recordings from the `uploads` directory
+@app.route('/uploads/<path:filename>')
+@cross_origin()
+def serve_upload(filename):
+    return send_from_directory('uploads', filename)
+
 # Guide Endpoints
 @app.get("/guides")
 @cross_origin()

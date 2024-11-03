@@ -25,7 +25,13 @@ class Guide:
     def remove_sections(self):
         self.sections = []
 
+    def to_json(self):
+        # Serialize the Guide to a dictionary that can be converted to JSON
+        return {
+            "title": self.title,
+            "uuid": self.uuid,
+            "sections": [section.to_json() for section in self.sections]
+        }
+
     def __str__(self):
         return f"Guide Title: {self.title}\n"
-
-    
