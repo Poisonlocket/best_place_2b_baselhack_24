@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import CarrouselView from "../components/CarrouselView";
 import CarouselViewMobile from "../components/CarouselViewMobile";
 import { getGuide } from "../components/api";
 import useIsMobile from "../hooks/useIsMobile";
 
 const View = () => {
+    const { id } = useParams(); // Retrieve the id parameter from the URL
     const [guide, setGuide] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,7 +16,7 @@ const View = () => {
         const fetchGuide = async () => {
             try {
                 setLoading(true);
-                const guideData = await getGuide();
+                const guideData = await getGuide(id); // Pass the id to getGuide
                 setGuide(guideData);
             } catch (err) {
                 setError(err.message);
@@ -24,7 +26,7 @@ const View = () => {
         };
 
         fetchGuide();
-    }, []);
+    }, [id]); // Re-fetch guide if the id changes
 
     return (
         <div className="w-full min-h-max p-4 flex flex-col items-center">

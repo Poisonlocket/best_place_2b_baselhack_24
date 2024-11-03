@@ -4,12 +4,19 @@ from flask_cors import CORS, cross_origin
 from guide import Guide
 from helpers import *
 
+from testData import generate_test_guide  # Import the test data function
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-guides: list[Guide] = []
 
+guides = generate_test_guide()  # Load the generated test guide into guides list
+
+for g in guides:
+    print(f"Guide: {g.get_uuid()}")
+    for s in g.get_sections():
+        print(f"\t section: {s.get_text()}")
 
 @app.get("/creators")
 @cross_origin()

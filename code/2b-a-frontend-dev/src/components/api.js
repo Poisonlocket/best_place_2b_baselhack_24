@@ -83,17 +83,16 @@ async function storeTitle(title, uuid) {
 }
 
 async function callGuide(id) {
-    axios({
-        method: 'get',
-        url: "" + process.env.REACT_APP_API_URL + '/guides/' + id,
-    }).then(function (response) {
-        console.log(response.data);
+    try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/guides/${id}`);
+        console.log("callGuide:", response.data);
         return response.data;
-    }).catch((error) => {
+    } catch (error) {
         console.log(error.message);
         return null;
-    });
+    }
 }
+
 
 async function callGuideImages(id) {
     axios({
@@ -139,15 +138,22 @@ function responseDataToGuide(responseData, responseImages) {
     return new Guide(name, uuid, "", "", sections);
 }
 
-// api.js
 export const getGuide = async (id) => {
     let responseData = await callGuide(id);
-    let responseImages = await callGuideImages(id);
-    if(responseData && responseData.sections && responseImages) {
-        return responseDataToGuide(responseData, responseImages);
+    console.log("getGuide: responseData", responseData);
+
+    // Check if responseData is valid before further processing
+    if (responseData && responseData.sections) {
+        let responseImages = await callGuideImages(id);
+        if (responseImages) {
+            return responseDataToGuide(responseData, responseImages);
+        }
     }
+    
+    // If no valid response data, return a generated test guide
     return generateTestGuide();
 };
+
 
 
 // Updated getGuides to set the last image in the last section as the startImage
