@@ -113,6 +113,9 @@ def gen_texts_from_images(images, possible_outcomes):
 
     # There will be one text per section / step_nb
     texts = []
+
+    if not images:
+        return texts
     
     current_text = ""
     previous_seq = int(images[0].split('.')[1])

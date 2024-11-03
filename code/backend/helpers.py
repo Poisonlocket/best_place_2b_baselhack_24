@@ -15,10 +15,12 @@ import operator
 
 import base64
 
+import json
+
 from ai.ai_functions import *
 
-# id and name of the hardcoded guide
-HARDCODED_GUIDES = ['pass_time']
+# id and name of the hardcoded guide. make sure to use " for valid json
+HARDCODED_GUIDES = ["pass_time"]
 
 POSSIBLE_OUTCOMES = ['ADD', 'REMOVE', 'CHANGE VIEW']
 
@@ -143,7 +145,10 @@ def guide_list(guides):
         guide_uuids_list.append(guide)
         guide_titles_list.append(guide)
     
-    guide_list_string = f'{{"guides":{guide_uuids_list}, "titles":{guide_titles_list}}}'
+    json_uuid_list = json.dumps(guide_uuids_list)
+    json_title_list = json.dumps(guide_titles_list)
+
+    guide_list_string = f'{{"guides":{json_uuid_list}, "titles":{json_title_list}}}'
     return guide_list_string
 
 def unique_guide(guides, guide_uuid):
@@ -208,7 +213,9 @@ def unique_guide(guides, guide_uuid):
         section_json["text"] = section.get_text()
         section_list.append(section_json)
 
-    return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{section_list}}}'
+    json_sections = json.dumps(section_list)
+
+    return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{json_sections}}}'
 
 def guide_image_data(guides, guide_id):
     image_paths = []
