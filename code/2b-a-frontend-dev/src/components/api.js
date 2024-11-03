@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Guide, Section } from "./model";
-import { generateTestGuide } from './test_data';
+import { generateTestGuide, generateTestGuideDuck } from './test_data';
 // api.js
 export const saveAndProcessGuide = async (guide) => {
     try {
@@ -139,6 +139,13 @@ function responseDataToGuide(responseData, responseImages) {
 }
 
 export const getGuide = async (id) => {
+
+    if( id == "duck")
+        {
+            return generateTestGuideDuck()
+        }
+
+
     let responseData = await callGuide(id);
     console.log("getGuide: responseData", responseData);
 
@@ -160,20 +167,21 @@ export const getGuide = async (id) => {
 export const getGuides = async () => {
     let response = await callAllGuides();
     console.log("getGuides response data: " + response);
-    if (response) {
-        console.log(response.data.guides)
-        let guides = [];
-        for (let i = 0; i < response.data.guides.length; i++) {
-            let g = new Guide(response.data.guides[i].title, response.data.guides[i].uuid)
-            g.text = response.data.guides[i].description
-            // get image?
-            g.startImage = await callGuideStartImage(g.uuid);
-            guides.push(g);
-        }
-        return guides;
-    } else {
+    // if (response) {
+    //     console.log(response.data.guides)
+    //     let guides = [];
+    //     for (let i = 0; i < response.data.guides.length; i++) {
+    //         let g = new Guide(response.data.guides[i].title, response.data.guides[i].uuid)
+    //         g.text = response.data.guides[i].description
+    //         // get image?
+    //         g.startImage = await callGuideStartImage(g.uuid);
+    //         guides.push(g);
+    //     }
+    //     return guides;
+    // } else 
+    {
         console.log("getGuides failed and we return 3 generated test guides.")
-        const guides = [generateTestGuide(), generateTestGuide(), generateTestGuide()];
+        const guides = [generateTestGuide(), generateTestGuideDuck(), generateTestGuide()];
         
         // Set each guide's startImage to the last image in the last section
         guides.forEach((guide) => {
