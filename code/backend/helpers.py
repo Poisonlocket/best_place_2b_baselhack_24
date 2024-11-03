@@ -45,8 +45,10 @@ def find_guide_index(guides, guide_uuid):
             return index
     return -1
 
-def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
+def upload_all(guides):
+    print("hi there upload_all")
     files = request.files.getlist('awesome_files')
+    print("files:", files)
 
     has_audio = False
     guide_exists = False
@@ -122,7 +124,7 @@ def upload_all(guides: list[Guide]) -> dict[str, Guide | str]:
         all_images = []
         for section in sections.values():
             all_images.append(section.get_img_ids())
-        guide_texts = gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
+        guide_texts = "dummy text" #gen_texts_from_images(all_images, POSSIBLE_OUTCOMES)
         index = 0
         for section in sections.values():
             section.set_text(guide_texts[index])
