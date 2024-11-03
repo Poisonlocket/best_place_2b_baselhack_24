@@ -1,13 +1,21 @@
-import React from "react";
-import AllGuides from "../components/AllGuides";
+import React, { useEffect, useState } from 'react';
+import AllGuides from '../components/AllGuides';
+import { getGuides } from '../components/api'; // Assume fetchGuides fetches guides from API
 
-const GuideOverview = () => {
-    return (
-        <div className="w-full min-h-screen p-8">
-            <h1 className="text-2xl font-bold mb-6">Overview:</h1>
-            <AllGuides />
-        </div>
-    );
-};
+function GuideOverview() {
+  const [guides, setGuides] = useState([]);
+
+  useEffect(() => {
+    const loadGuides = async () => {
+      const fetchedGuides = await getGuides();
+      setGuides(fetchedGuides);
+    };
+    loadGuides();
+  }, []);
+
+  return (
+    <AllGuides guides={guides} />
+  );
+}
 
 export default GuideOverview;
