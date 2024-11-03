@@ -78,7 +78,7 @@ def transcribe_and_format_audio(audio_file, nb_steps):
 
 
 def transcribe_and_format_audio_openai(audio_file, format, nb_steps):
-    base64_audio = encode_audio(audio_file)
+    base64_audio = encode_audio("../uploads/images/"+audio_file)
     response = client.chat.completions.create(
         model="gpt-4o-audio-preview",
         modalities=["text", "audio"],
@@ -141,8 +141,8 @@ def gen_texts_from_images(images, possible_outcomes):
                 prompt = f"""From these two images, tell me what needs to be done to go from image1 to image2.
                             Format it like an instruction manual (don't over do it). Categorize the transition from one of the following output categories: {possible_outcomes}.
                             From that categorization, continue the description. Be brief in your response."""
-                base64_image1 = encode_image("../backend/uploads/images/"+previous_image)
-                base64_image2 = encode_image("../backend/uploads/images/"+image)
+                base64_image1 = encode_image("../uploads/images/"+previous_image)
+                base64_image2 = encode_image("../uploads/images/"+image)
                 response = client.chat.completions.create(
                     model="gpt-4-turbo",
                     messages=[
