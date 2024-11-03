@@ -55,7 +55,7 @@ async function storeImages(data) {
 }
 
 async function storeTitle(title, uuid) {
-    axios.post("" + process.env.REACT_APP_API_URL + "/upload", data, {
+    axios.post("" + process.env.REACT_APP_API_URL + "/upload", {
         headers: {
             'accept': 'application/json',
             'Content-Encoding': 'gzip',
@@ -118,8 +118,8 @@ function responseDataToGuide(responseData, responseImages) {
 
 // api.js
 export const getGuide = async (id) => {
-    let responseData = callGuide(id);
-    let responseImages = callGuideImages(id);
+    let responseData = await callGuide(id);
+    let responseImages = await callGuideImages(id);
     if(responseData && responseData.sections && responseImages) {
         return responseDataToGuide(responseData, responseImages);
     }
@@ -129,15 +129,32 @@ export const getGuide = async (id) => {
 
 // Updated getGuides to set the last image in the last section as the startImage
 export const getGuides = async () => {
-    const guides = [generateTestGuide(), generateTestGuide(), generateTestGuide()];
+    let responseData = await callAllGuides();
+    if (responseData) {
+        return await responseData.guides.map(e => getGuide(e));
+    } else {
+        const guides = [generateTestGuide(), generateTestGuide(), generateTestGuide()];
     
-    // Set each guide's startImage to the last image in the last section
-    guides.forEach((guide) => {
-        const lastSection = guide.sections[guide.sections.length - 1];
-        if (lastSection && lastSection.images.length > 0) {
-            guide.startImage = lastSection.images[lastSection.images.length - 1].fileContent;
-        }
-    });
+        // Set each guide's startImage to the last image in the last section
+        guides.forEach((guide) => {
+            const lastSection = guide.sections[guide.sections.length - 1];
+            if (lastSection && lastSection.images.length > 0) {
+                guide.startImage = lastSection.images[lastSection.images.length - 1].fileContent;
+            }
+        });
 
-    return guides;
+        return guides;
+    }
 };
+
+async function callAllGuides() {
+    axios({
+        method: 'get',
+        url: "" + process.env.REACT_APP_API_URL + '/guides',
+      }).then(function (response) {
+        console.log(response);
+        return response.data;
+      }).catch((error) => {
+        return null;
+    });
+}
