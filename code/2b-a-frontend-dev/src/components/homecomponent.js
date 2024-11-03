@@ -9,7 +9,7 @@ const HomeComponent = () => {
             <div className="people flex-1 flex-shrink-0 mb-4 md:mb-0 md:mr-[5px]"> {/* Add margin bottom for small screens */}
                 <img 
                     src={peopleImage} 
-                    alt="Developers working with Open API"
+                    alt="Developers working with Open AI"
                     className="max-w-[600px] max-h-[600px] w-full h-auto object-contain" // Set max width and height
                 />
             </div>
@@ -24,7 +24,7 @@ const HomeComponent = () => {
                     </Link>
                     <Link to="/overview">
                         <button type="button" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                            All Guides
+                            All GUIDES
                         </button>
                     </Link>
                 </div>
