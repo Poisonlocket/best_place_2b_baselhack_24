@@ -27,6 +27,7 @@ async function guideToData(guides) {
     let data = new FormData();
     for (let i = 0; i < guides.sections.length; i++) {
         let currSection = guides.sections[i];
+        console.log("Number of images in section " + i + ": " + currSection.images.length);
         for (let j = 0; j < currSection.images.length; j++) {
             let imageContent = await currSection.images[j].asBlob();
             console.log(imageContent)
