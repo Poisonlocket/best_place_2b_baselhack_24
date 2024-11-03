@@ -50,9 +50,13 @@ def upload_all(guides):
     files = request.files.getlist('awesome_files')
     print("files:", files)
 
+    print("all guides: ", guides)
+
     has_audio = False
     guide_exists = False
     sections = {} # contains section object
+    frontend_guide_uuid = ""
+    current_guide = None
 
     for file in files:
         print(f"file {file.filename} upload allowed?: ", allowed_upload_file(file.filename))
@@ -74,10 +78,12 @@ def upload_all(guides):
 
             if guide_exists == False:
                 guide_exists = True 
-                if guide_uuid == "no_id":
+                if guide_uuid == "no_id" or guides == []:
+                    print("no id or empty guides")
                     current_guide = Guide()
                     frontend_guide_uuid = current_guide.get_uuid()
                 else:
+                    print("guide given with id: ", guide_uuid)
                     frontend_guide_uuid = guide_uuid
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
                     current_guide.remove_sections()
