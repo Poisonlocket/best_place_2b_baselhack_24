@@ -64,4 +64,4 @@ curl -i -X POST -H "Content-Type: multipart/form-data" -F "audio=@/home/user/Mus
 ``` 
 to upload audio.
 
-:heart: :computer: :chocolate:
+❤️ 💻 🍫
