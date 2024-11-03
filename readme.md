@@ -35,6 +35,12 @@ pip install openai-whisper
 pip install openai
 pip install python-dotenv
 ```
+To test the AI transcription + formatting function (audio -> text), you can run the function ```transcribe_and_format_audio_openai```.
+To test the AI generation of text descriptions from a series of images (images -> text), you can run the function ```gen_texts_from_images```.
+Both are located in the file:
+```sh
+code/ai/ai_functions.py
+```
 
 ### Backend
 
@@ -59,7 +65,3 @@ Analog use
 curl -i -X POST -H "Content-Type: multipart/form-data" -F "audio=@/home/user/Music/never_gonna_give_you_up.mp3" http://127.0.0.1:5000/upload/audio
 ``` 
 to upload audio.
-
-### AI transform from input file
-
-Start transform from a random ```input_text.txt``` with the e.g following keywords ```beginnen```, ```anschliessend```, ```danach```, ```als nächstes```

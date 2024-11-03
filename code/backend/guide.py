@@ -5,10 +5,10 @@ class Guide:
     def __init__(self, sections=[]):
         self.title = ""
         self.sections = sections
-        self._uuid = str(uuid.uuid4())
+        self.uuid = str(uuid.uuid4())
 
     def get_uuid(self):
-        return self._uuid
+        return self.uuid
     
     def get_title(self):
         return self.title
@@ -25,8 +25,13 @@ class Guide:
     def remove_sections(self):
         self.sections = []
 
-    def __str__(self):
-        sections_str = "\n\n".join(section.get_title for section in self.sections)
-        return f"Guide Title: {self.title}\n\n{sections_str}"
+    def to_json(self):
+        # Serialize the Guide to a dictionary that can be converted to JSON
+        return {
+            "title": self.title,
+            "uuid": self.uuid,
+            "sections": [section.to_json() for section in self.sections]
+        }
 
-    
+    def __str__(self):
+        return f"Guide Title: {self.title}\n"

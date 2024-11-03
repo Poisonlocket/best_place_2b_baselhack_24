@@ -5,6 +5,7 @@ import peopleImage from '../assets/people.png'; // Import the image
 
 const HomeComponent = () => {
     return (
+
         <>
             <div className="flex flex-col md:flex-row items-center justify-start p-4"> {/* Use flex-col for small screens */}
                 <div className="people flex-1 flex-shrink-0 mb-4 md:mb-0 md:mr-[5px]"> {/* Add margin bottom for small screens */}
@@ -43,6 +44,7 @@ const HomeComponent = () => {
                         <input type="radio" name="rating-3" className="mask mask-heart bg-lime-400"/>
                         <input type="radio" name="rating-3" className="mask mask-heart bg-green-400" checked="checked"/>
                     </div>
+
                 </div>
             </div>
 

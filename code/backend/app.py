@@ -52,6 +52,13 @@ def teapot() -> Response:
 """
 
     return Response(art, mimetype="text/plain")
+
+# Static route to serve images and recordings from the `uploads` directory
+@app.route('/uploads/<path:filename>')
+@cross_origin()
+def serve_upload(filename):
+    return send_from_directory('uploads', filename)
+
 # Guide Endpoints
 @app.get("/guides")
 @cross_origin()
@@ -63,20 +70,26 @@ def get_guides():
 def get_specific_guide(guide_id):
     return unique_guide(guides, guide_id)
 
-@app.post("/guides")
-@cross_origin()
-def add_guide():
-    data = request.get_json()
-    new_guide = Guide(sections=data["sections"]) 
-    guides.append(new_guide)
-    print(guides)
-    return Response("Guide added successfully", 201)
+# @app.post("/guides")
+# @cross_origin()
+# def add_guide():
+#     data = request.get_json()
+#     new_guide = Guide(sections=data["sections"]) 
+#     guides.append(new_guide)
+#     print(guides)
+#     return Response("Guide added successfully", 201)
 
 @app.post("/upload")
 @cross_origin()
 def upload():
     returns = upload_all(guides)
-    guides.append(returns["app_return"])
+    returned_guide = returns["app_return"]
+    returned_uuid = returned_guide.get_uuid()
+    index = find_guide_index(guides, returned_uuid)
+    print("upload index (is guide already existing?): ", index)
+    if index == -1:
+        guides.append(returns["app_return"])
+    print("guides:", guides)
     return returns["frontend_return"]
 
 @app.post("/guide_title")
