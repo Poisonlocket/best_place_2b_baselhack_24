@@ -6,8 +6,8 @@ import peopleImage from '../assets/people.png'; // Import the image
 const HomeComponent = () => {
     return (
 
-        <>
-            <div className="flex flex-col md:flex-row items-center justify-start p-4"> {/* Use flex-col for small screens */}
+        <div className={"bg-slate-100"}>
+            <div className="flex flex-col bg-slate-100 md:flex-row items-center justify-start p-4"> {/* Use flex-col for small screens */}
                 <div className="people flex-1 flex-shrink-0 mb-4 md:mb-0 md:mr-[5px]"> {/* Add margin bottom for small screens */}
                     <img
                         src={peopleImage}
@@ -32,17 +32,17 @@ const HomeComponent = () => {
                     </div>
                 </div>
             </div>
-            <div className="stats shadow items-center justify-center w-full pt-10 pb-20">
+            <div className="stats  bg-slate-100 items-center justify-center w-full pt-10 pb-20">
                 <div className="stat text-center">
-                    <div className="stat-title text-3xl">AI Mistakes per 1000 interactions:</div>
-                    <div className="stat-value text-6xl">110%</div>
-                    <div className="stat-desc text-2xl">Only slightly worse than your average intern</div>
+                    <div className="stat-title text-slate-900 text-3xl">AI Mistakes per 1000 interactions:</div>
+                    <div className="stat-value text-black text-6xl">110%</div>
+                    <div className="stat-desc text-slate-900 text-2xl">Only slightly worse than your average intern</div>
                     <div className="rating justify-self-center pt-4 gap-1">
-                        <input type="radio" name="rating-3" className="mask mask-heart bg-red-400"/>
-                        <input type="radio" name="rating-3" className="mask mask-heart bg-orange-400" />
-                        <input type="radio" name="rating-3" className="mask mask-heart bg-yellow-400"/>
-                        <input type="radio" name="rating-3" className="mask mask-heart bg-lime-400"/>
-                        <input type="radio" name="rating-3" className="mask mask-heart bg-green-400" checked="checked"/>
+                        <input disabled={true} type="radio" name="rating-3" className="mask mask-heart bg-red-400"/>
+                        <input disabled={true} type="radio" name="rating-3" className="mask mask-heart bg-orange-400" />
+                        <input disabled={true} type="radio" name="rating-3" className="mask mask-heart bg-yellow-400"/>
+                        <input disabled={true} type="radio" name="rating-3" className="mask mask-heart bg-lime-400"/>
+                        <input disabled={true} type="radio" name="rating-3" className="mask mask-heart bg-green-400" checked="checked"/>
                     </div>
 
                 </div>
@@ -87,7 +87,7 @@ const HomeComponent = () => {
                 </form>
             </footer>
 
-        </>
+        </div>
     );
 }
 

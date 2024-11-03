@@ -29,7 +29,7 @@ const View = () => {
     }, [id]); // Re-fetch guide if the id changes
 
     return (
-        <div className="w-full min-h-max p-4 flex flex-col items-center">
+        <div className="w-full min-h-max bg-slate-100 p-4 flex flex-col items-center">
             {loading ? (
                 <p className="text-center">Loading SmartGuide...</p>
             ) : error ? (
