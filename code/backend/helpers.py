@@ -40,8 +40,8 @@ def split_filename(filename: str) -> List[str]:
     return filename.split('.')
 
 def find_guide_index(guides, guide_uuid):
-    print("all guides: ", guides)
     for index, guide in enumerate(guides):
+        print(f"variable uuid: {guide.get_uuid()} to fixed: {guide_uuid}")
         if guide.get_uuid() == guide_uuid:
             return index
     return -1
@@ -50,6 +50,7 @@ def upload_all(guides):
     print("hi there upload_all")
     files = request.files.getlist('awesome_files')
     print("files:", files)
+    print("files nr:", len(files))
 
     print("all guides: ", guides)
 
@@ -60,6 +61,7 @@ def upload_all(guides):
     current_guide = Guide()
 
     for file in files:
+        print("--file.", file)
         print(f"file {file.filename} upload allowed?: ", allowed_upload_file(file.filename))
         if file and allowed_upload_file(file.filename):
             filename = file.filename 
@@ -81,17 +83,20 @@ def upload_all(guides):
             if guide_exists == False:
                 guide_exists = True 
                 if guide_uuid == "no_id":
-                    print("no id or empty guides")
-                    current_guide = Guide()
+                    print("Create a guide completely new. No_ID")
                     frontend_guide_uuid = current_guide.get_uuid()
                 elif guides == []: 
-                    current_guide = Guide()
-                    current_guide._uuid = guide_uuid
+                    print("Create a new guide since empty. Put in existing uuid")
+                    current_guide.uuid = guide_uuid
                     frontend_guide_uuid = guide_uuid
+                    print("current guide: ", current_guide)
+                    print("current guide uuid: ", current_guide.get_uuid())
+                    print("given uuid: ", guide_uuid)
                 else:
                     print("guide given with id: ", guide_uuid)
                     frontend_guide_uuid = guide_uuid
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
+                    current_guide.uuid = guide_uuid
                     current_guide.remove_sections()
 
             new_filename = ""
@@ -107,6 +112,7 @@ def upload_all(guides):
 
                 
             # frontend sends the whole guide 
+            print("step sequence: ", step_sequence)
             if step_sequence in sections:
                 current_section = sections[step_sequence]
             else:
@@ -117,7 +123,8 @@ def upload_all(guides):
 
             if file_extension in ALLOWED_AUDIO_EXTENSIONS:
                 print("got a valid file exttension for audio conversion")
-                transcribed_text = transcribe_and_format_audio(new_filename, 3) # no idea how many steps are ok or good
+                audio_filepath = os.path.join("./uploads/audio", new_filename)
+                transcribed_text = transcribe_and_format_audio(audio_filepath, 3) # no idea how many steps are ok or good
                 current_section.set_text(transcribed_text)
                 print("transcribed text: ", current_section.get_text())
             
@@ -125,6 +132,9 @@ def upload_all(guides):
                 
         else:
             raise TypeError("Invalid file type for uploaded file: ", file.filename)
+
+    print("current guide: ", current_guide)
+    print("current guide uuid: ", current_guide.get_uuid())
 
     sections = dict(sorted(sections.items()))
     for section in sections.values():
@@ -167,6 +177,8 @@ def guide_list(guides):
 
 def unique_guide(guides, guide_uuid):
     # creates the json response for the frontend for a single uuid
+    print("getting a unique guide /guides/uuid, with id:", guide_uuid)
+
     section_list = []
 
     # hardcoded guides
@@ -179,9 +191,10 @@ def unique_guide(guides, guide_uuid):
         # print("all files:", onlyfiles)
 
         current_guide = Guide()
-        current_guide._uuid = guide_uuid
+        current_guide.uuid = guide_uuid
 
         for hc_file in onlyfiles:
+            print("hc file: ", hc_file)
             hc_file_path = os.path.join(hardcoded_path, guide_uuid, hc_file)
 
             name_list = split_filename(hc_file)
@@ -222,9 +235,12 @@ def unique_guide(guides, guide_uuid):
   
     # read the guide as json format
     for section in current_guide.sections:
+        print("section: ", section)
         section_json = {}
         section_json["img_ids"] = section.get_img_ids() 
+        print("image ids: ", section_json["img_ids"])
         section_json["text"] = section.get_text()
+        print("text: ", section_json["text"])
         section_list.append(section_json)
 
     json_sections = json.dumps(section_list)

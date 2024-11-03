@@ -5,10 +5,10 @@ class Guide:
     def __init__(self, sections=[]):
         self.title = ""
         self.sections = sections
-        self._uuid = str(uuid.uuid4())
+        self.uuid = str(uuid.uuid4())
 
     def get_uuid(self):
-        return self._uuid
+        return self.uuid
     
     def get_title(self):
         return self.title
@@ -26,7 +26,6 @@ class Guide:
         self.sections = []
 
     def __str__(self):
-        sections_str = "\n\n".join(section.get_title for section in self.sections)
-        return f"Guide Title: {self.title}\n\n{sections_str}"
+        return f"Guide Title: {self.title}\n"
 
     
