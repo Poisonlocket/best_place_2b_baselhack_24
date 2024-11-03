@@ -40,6 +40,7 @@ def split_filename(filename: str) -> List[str]:
     return filename.split('.')
 
 def find_guide_index(guides, guide_uuid):
+    print("all guides: ", guides)
     for index, guide in enumerate(guides):
         if guide.get_uuid() == guide_uuid:
             return index
@@ -50,9 +51,13 @@ def upload_all(guides):
     files = request.files.getlist('awesome_files')
     print("files:", files)
 
+    print("all guides: ", guides)
+
     has_audio = False
     guide_exists = False
     sections = {} # contains section object
+    frontend_guide_uuid = ""
+    current_guide = Guide()
 
     for file in files:
         print(f"file {file.filename} upload allowed?: ", allowed_upload_file(file.filename))
@@ -72,12 +77,19 @@ def upload_all(guides):
                 step_sequence = name_list[1]
                 file_extension = name_list[2]
 
+            print("guide uuid: ", guide_uuid)
             if guide_exists == False:
                 guide_exists = True 
                 if guide_uuid == "no_id":
+                    print("no id or empty guides")
                     current_guide = Guide()
                     frontend_guide_uuid = current_guide.get_uuid()
+                elif guides == []: 
+                    current_guide = Guide()
+                    current_guide._uuid = guide_uuid
+                    frontend_guide_uuid = guide_uuid
                 else:
+                    print("guide given with id: ", guide_uuid)
                     frontend_guide_uuid = guide_uuid
                     current_guide = guides[find_guide_index(guides=guides, guide_uuid=frontend_guide_uuid)]
                     current_guide.remove_sections()
@@ -105,7 +117,7 @@ def upload_all(guides):
 
             if file_extension in ALLOWED_AUDIO_EXTENSIONS:
                 print("got a valid file exttension for audio conversion")
-                transcribed_text = transcribe_and_format_audio(new_filename)
+                transcribed_text = transcribe_and_format_audio(new_filename, 3) # no idea how many steps are ok or good
                 current_section.set_text(transcribed_text)
                 print("transcribed text: ", current_section.get_text())
             
