@@ -138,9 +138,10 @@ export const getGuide = async (id) => {
 // Updated getGuides to set the last image in the last section as the startImage
 export const getGuides = async () => {
     let response = await callAllGuides();
-    console.log("getGuides response data " + response);
+    console.log("getGuides response data: " + response);
     if (response) {
-        console.log(response.data)
+        //todo use for loop
+        console.log(response.data.guides)
         return await response.data.guides.map(e => getGuide(e));
     } else {
         console.log("getGuides failed and we return 3 generated test guides.")
