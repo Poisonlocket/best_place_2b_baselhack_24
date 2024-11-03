@@ -1,6 +1,8 @@
 # BaselHack 2024
 
 We chose the challenge from Endress&Hauser "GuideMe". Our team is "Best Place 2B". The product can be checked out on: https://2ce6-83-76-7-131.ngrok-free.app/ (Don't worry about the security warning. That is hosting service specific, and we are good people not hosting malware.)
+Try it:
+![QR code to webapp of best place two be](./assets/qr-code.png "BestPlace2B")
 
 ## Explanation for Developers
 
