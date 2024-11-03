@@ -111,7 +111,7 @@ def upload_all(guides):
 
             if file_extension in ALLOWED_AUDIO_EXTENSIONS:
                 print("got a valid file exttension for audio conversion")
-                transcribed_text = transcribe_and_format_audio(new_filename)
+                transcribed_text = transcribe_and_format_audio(new_filename, 3) # no idea how many steps are ok or good
                 current_section.set_text(transcribed_text)
                 print("transcribed text: ", current_section.get_text())
             
