@@ -27,14 +27,16 @@ async function guideToData(guides) {
     let data = new FormData();
     for (let i = 0; i < guides.sections.length; i++) {
         let currSection = guides.sections[i];
+        console.log("Number of images in section " + i + ": " + currSection.images.length);
         for (let j = 0; j < currSection.images.length; j++) {
-            let imageContent = await fetch(currSection.images[j].fileContent)
-            console.log(imageContent.blob)
-            data.append('awesome_files', imageContent.blob(), "" + guides.uuid 
+            let imageContent = await currSection.images[j].asBlob();
+            console.log(imageContent)
+            data.append('awesome_files', imageContent, "" + guides.uuid 
                 + "." + i + "." + j + ".jpg");
         }
         if(currSection.recording) {
-            data.append('awesome_files', currSection.recording.fileContent, "" + guides.uuid 
+            let recordingContent = await currSection.recording.asBlob();
+            data.append('awesome_files', recordingContent, "" + guides.uuid 
                 + "." + i + "." + currSection.images.length + ".ogg");
         }
     }
