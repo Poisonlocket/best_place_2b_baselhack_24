@@ -5,8 +5,8 @@ function AllGuides({ guides }) { // Assume guides array is passed as a prop
 
   return (
     <div className="flex flex-wrap justify-center gap-6 p-4">
-      {guides.map((guide) => (
-        <div key={guide.id} className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 w-full max-w-sm">
+      {guides.map((guide, index) => (
+        <div key={index} className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 w-full max-w-sm">
           <img className="w-full h-48 object-cover rounded-t-lg" src={guide.image || 'default.jpg'} alt={guide.title} />
           <div className="flex flex-col p-4 w-full">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">{guide.title}</h5>
