@@ -3,7 +3,7 @@ import peopleImage from '../assets/people.png'; // Import the image
 
 function OurNavbar() {
   return (
-    <Navbar fluid >
+    <Navbar fluid className={"bg-slate-200"} >
       <Navbar.Brand href="/">
         <img src={peopleImage} className="mr-3 h-6 sm:h-9" alt="SmartGuide" />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white"></span>

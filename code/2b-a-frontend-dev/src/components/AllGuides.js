@@ -11,7 +11,7 @@ function AllGuides({ guides }) { // Assume guides array is passed as a prop
   return (
     <div className="flex flex-wrap justify-center gap-6 p-4">
       {guides.map((guide, index) => (
-        <div key={index} className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 w-full max-w-sm">
+        <div key={index} className="flex flex-col items-center bg-slate-200 transition ease-in-out duration-150ra border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 w-full max-w-sm">
           <img className="w-full h-48 object-cover rounded-t-lg" src={guide.startImage || rubberDuck} alt={guide.name} />
           <div className="flex flex-col p-4 w-full">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">{guide.name}</h5>
