@@ -40,6 +40,29 @@ class SectionRecording {
     constructor(fileContent) {
         this.fileContent = fileContent;
     }
+    
+    async asBlob() {
+        return new Promise((resolve, reject) => {
+            if (typeof this.fileContent === "string") {
+                // Fetch the OGG data from the provided URL or base64 string
+                fetch(this.fileContent)
+                    .then((response) => {
+                        if (response.ok) {
+                            return response.blob();
+                        } else {
+                            throw new Error("Failed to fetch audio data");
+                        }
+                    })
+                    .then((blob) => resolve(blob))
+                    .catch((error) => reject(error));
+            } else if (this.fileContent instanceof Blob) {
+                // If fileContent is already a Blob, resolve it directly
+                resolve(this.fileContent);
+            } else {
+                reject(new Error("Unsupported fileContent format"));
+            }
+        });
+    }
 }
 
 // models/Section.js
