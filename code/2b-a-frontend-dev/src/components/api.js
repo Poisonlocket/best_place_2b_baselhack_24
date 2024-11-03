@@ -2,11 +2,12 @@ import axios from 'axios';
 import { Guide, Section } from "./model";
 import { generateTestGuide } from './test_data';
 // api.js
-export const saveAndProcessGuide = async ({ guide }) => {
+export const saveAndProcessGuide = async (guide) => {
     try {
         // Simulate a delay of 1 second
         //await new Promise(resolve => setTimeout(resolve, 1000));
-        let data = guideToData(guide)
+        console.log(guide);
+        let data = await guideToData(guide)
         let new_uuid = await storeImages(data);
         await storeTitle(guide.title, new_uuid);
         // Mock response data
@@ -22,16 +23,18 @@ export const saveAndProcessGuide = async ({ guide }) => {
     }
 };
 
-function guideToData(guides) {
+async function guideToData(guides) {
     let data = new FormData();
     for (let i = 0; i < guides.sections.length; i++) {
         let currSection = guides.sections[i];
         for (let j = 0; j < currSection.images.length; j++) {
-            data.append('awesome_files', currSection.images[j], "" + guides.uuid 
+            let imageContent = await fetch(currSection.images[j].fileContent)
+            console.log(imageContent.blob)
+            data.append('awesome_files', imageContent.blob(), "" + guides.uuid 
                 + "." + i + "." + j + ".jpg");
         }
         if(currSection.recording) {
-            data.append('awesome_files', currSection.recording, "" + guides.uuid 
+            data.append('awesome_files', currSection.recording.fileContent, "" + guides.uuid 
                 + "." + i + "." + currSection.images.length + ".ogg");
         }
     }
@@ -108,10 +111,10 @@ function responseDataToGuide(responseData, responseImages) {
         let instructionText = responseData.sections[i].text;
         let images = [];
         for(let j = 0; j < responseImages[i].length; j++) {
-            images.append(responseImages[i][j]);
+            images.push(responseImages[i][j]);
         }
         let newSection = new Section(i, name, images, null, instructionText);
-        sections.append(newSection);
+        sections.push(newSection);
     }
     return new Guide(name, uuid, "", "", sections);
 }
