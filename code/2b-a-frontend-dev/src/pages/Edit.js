@@ -39,6 +39,7 @@ const Edit = () => {
             const response = await saveAndProcessGuide(guide);
             console.log("Guide successfully processed:", response);
             alert("Guide processed successfully!");
+            window.location.href = "/overview"
         } catch (error) {
             console.error("Failed to process guide:", error);
             alert("Failed to process guide. Please try again.");
