@@ -8,6 +8,9 @@ export const saveAndProcessGuide = async (guide) => {
         //await new Promise(resolve => setTimeout(resolve, 1000));
         console.log(guide);
         let data = await guideToData(guide)
+        for (const [key, value] of data.entries()) {
+            console.log(key, value);
+        }
         let new_uuid = await storeImages(data);
         await storeTitle(guide.title, new_uuid);
         // Mock response data
@@ -27,10 +30,9 @@ async function guideToData(guides) {
     let data = new FormData();
     for (let i = 0; i < guides.sections.length; i++) {
         let currSection = guides.sections[i];
-        console.log("Number of images in section " + i + ": " + currSection.images.length);
+        // console.log("Number of images in section " + i + ": " + currSection.images.length);
         for (let j = 0; j < currSection.images.length; j++) {
             let imageContent = await currSection.images[j].asBlob();
-            console.log(imageContent)
             data.append('awesome_files', imageContent, "" + guides.uuid 
                 + "." + i + "." + j + ".jpg");
         }
@@ -44,7 +46,7 @@ async function guideToData(guides) {
 }
 
 async function storeImages(data) {
-    axios.post("" + process.env.REACT_APP_API_URL + "/upload", data, {
+    let x = await axios.post("" + process.env.REACT_APP_API_URL + "/upload", data, {
         headers: {
             'accept': 'application/json',
             'Content-Encoding': 'gzip',
@@ -57,6 +59,7 @@ async function storeImages(data) {
     }).catch((error) => {
         console.error(error)
     });
+    return x;
 }
 
 async function storeTitle(title, uuid) {
