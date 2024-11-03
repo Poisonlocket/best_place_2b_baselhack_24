@@ -12,11 +12,13 @@ guides: list[Guide] = []
 
 
 @app.get("/creators")
+@cross_origin()
 def creators() -> str:
     return "This Backend was built by Leonard, Jon and Lorenzo "
 
 
 @app.get("/")
+@cross_origin()
 def hello():
     return flask.redirect("/418", 302)
 
@@ -24,6 +26,7 @@ def hello():
 
 # very important endpoint, serving lots of tea
 @app.get("/418")
+@cross_origin()
 def teapot() -> Response:
     art = r"""
             .------.____
@@ -51,10 +54,12 @@ def teapot() -> Response:
     return Response(art, mimetype="text/plain")
 # Guide Endpoints
 @app.get("/guides")
+@cross_origin()
 def get_guides():
     return guide_list(guides)
 
 @app.get("/guides/<guide_id>")
+@cross_origin()
 def get_specific_guide(guide_id):
     return unique_guide(guides, guide_id)
 
@@ -84,10 +89,12 @@ def add_guide_title():
     
 
 @app.get("/get_images/<guide_id>")
+@cross_origin()
 def get_images(guide_id):
     return guide_image_data(guides, guide_id)   
 
 @app.get("/get_images/<guide_id>/last")
+@cross_origin()
 def get_last_image(guide_id):
     return guide_image_last(guides, guide_id)
 
