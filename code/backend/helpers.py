@@ -20,7 +20,7 @@ from ai.ai_functions import *
 # id and name of the hardcoded guide
 HARDCODED_GUIDES = ['pass_time']
 
-POSSIBLE_OUTCOMES = ['ADD', 'REMOVE', 'CHANGE VIEW']
+POSSIBLE_OUTCOMES = ['ADD', 'REMOVE', 'CHANGE VIEW', 'ADJUST', 'CONNECT', 'TIGHTEN']
 
 IMAGE_FOLDER = 'uploads/images'
 AUDIO_FOLDER = 'uploads/audio'
