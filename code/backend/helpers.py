@@ -213,7 +213,9 @@ def unique_guide(guides, guide_uuid):
         section_json["text"] = section.get_text()
         section_list.append(section_json)
 
-    return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{section_list}}}'
+    json_sections = json.dumps(section_list)
+
+    return f'{{"uuid":"{current_guide.get_uuid()}", "title":"{current_guide.get_title()}", "sections":{json_sections}}}'
 
 def guide_image_data(guides, guide_id):
     image_paths = []
